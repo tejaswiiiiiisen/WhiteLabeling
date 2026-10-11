@@ -410,6 +410,49 @@ body {
   animation: starTwinkleFastB 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
+/* Circle Graph & Ring Rotation in Loop */
+@keyframes circleSpinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes circleSpinReverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes pulseGlowRing {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.4)) drop-shadow(0 0 20px rgba(56, 189, 248, 0.2));
+    opacity: 0.9;
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(168, 85, 247, 0.7)) drop-shadow(0 0 35px rgba(16, 185, 129, 0.4));
+    opacity: 1;
+  }
+}
+
+.animate-circle-spin-slow {
+  animation: circleSpinSlow 18s linear infinite;
+}
+
+.animate-circle-spin-reverse {
+  animation: circleSpinReverse 12s linear infinite;
+}
+
+.animate-pulse-glow-ring {
+  animation: pulseGlowRing 4s ease-in-out infinite;
+}
+
+
 
 
 

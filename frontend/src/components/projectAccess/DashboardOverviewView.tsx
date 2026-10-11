@@ -2070,1415 +2070,1470 @@ Authorized Signature: Macenza Core Billing Gateway
       </div>
 
 
-      {/* Main Interactive Section (Payments & Plans Ledger) */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-        {/* Section Header */}
-        <div className="p-3.5 sm:p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-              <Receipt className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white tracking-tight">
-                White-Label Transactions & Subscription History
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Verified payment ledger, subscription licenses, and upgrade requests across enterprise suites.
-              </p>
-            </div>
-          </div>
+      {/* Interactive Circular Analytics & Real-Time Performance Graph (Outside Dashboard) */}
+      <div className="bg-white dark:bg-black rounded-3xl border border-slate-200 dark:border-zinc-800 shadow-xl dark:shadow-2xl p-6 sm:p-7 relative overflow-hidden transition-colors">
+        {/* Ambient Glow Orbs */}
+        <div className="hidden dark:block absolute top-0 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="hidden dark:block absolute bottom-0 left-1/4 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveTab(activeTab === 'plans' ? 'payments' : 'plans')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-black transition-all cursor-pointer ${
-                activeTab === 'plans'
-                  ? 'bg-gradient-to-r from-[#5B4DF5] to-[#7566FC] text-white shadow-md shadow-[#5B4DF5]/30 ring-2 ring-[#5B4DF5]/40'
-                  : 'bg-violet-100/80 dark:bg-violet-950/60 text-[#5B4DF5] dark:text-violet-300 border border-violet-300/80 dark:border-violet-700 hover:bg-violet-200/80 shadow-xs'
-              }`}
-            >
-              <Crown className="w-4 h-4 text-inherit" />
-              <span>{activeTab === 'plans' ? 'View Payment Ledger' : 'Subscription Plans'}</span>
-            </button>
-
-            {activeTab === 'payments' && (
-              <>
-                <button
-                  onClick={exportPaymentsCSV}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer hover:bg-slate-50"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Export CSV
-                </button>
-                <button
-                  onClick={() => setIsRecordPaymentOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-xs cursor-pointer"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  Record Payment
-                </button>
-              </>
-            )}
+        {/* Section Top Header: Title & Overview Pill */}
+        <div className="flex items-center justify-between mb-5 pb-3 border-b border-slate-100 dark:border-zinc-800/80">
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-800/60 text-cyan-700 dark:text-cyan-300 text-xs font-bold tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-ping shrink-0" />
+              <span>LIVE ECOSYSTEM OVERVIEW</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              Real-Time Platform Performance
+            </h2>
           </div>
         </div>
 
-        {/* View 2: Payment History Ledger */}
-        {activeTab === 'payments' && (
-          <div className="space-y-4">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
-              <div className="relative w-full sm:w-72">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search transaction ID, tenant..."
-                  value={paymentSearch}
-                  onChange={(e) => setPaymentSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-              </div>
-
-              <div className="text-xs font-mono text-slate-500">
-                Total Received: <strong className="text-emerald-600 dark:text-emerald-400">{formattedTotalPayments}</strong>
-              </div>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-800">
-                  <tr>
-                    <th className="px-5 py-3.5">Transaction ID</th>
-                    <th className="px-5 py-3.5">Tenant Organization</th>
-                    <th className="px-5 py-3.5">Plan / Package</th>
-                    <th className="px-5 py-3.5">Amount (INR)</th>
-                    <th className="px-5 py-3.5">Payment Method</th>
-                    <th className="px-5 py-3.5">Payment Date</th>
-                    <th className="px-5 py-3.5">Status</th>
-                    <th className="px-5 py-3.5 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
-                  {filteredPayments.map((p: TenantPaymentItem) => (
-                    <tr
-                      key={p._id}
-                      className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors"
-                    >
-                      <td className="px-5 py-4 font-mono font-bold text-slate-900 dark:text-white">
-                        {p.transactionId}
-                      </td>
-                      <td className="px-5 py-4 font-extrabold text-slate-900 dark:text-white">
-                        {p.organizationName}
-                      </td>
-                      <td className="px-5 py-4">
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
-                          {p.plan} ({p.billingCycle})
-                        </span>
-                      </td>
-                      <td className="px-5 py-4 font-mono font-extrabold text-slate-900 dark:text-white">
-                        ₹{(p.amount / 1000).toLocaleString()}
-                      </td>
-                      <td className="px-5 py-4 text-slate-500 font-medium">{p.paymentMethod}</td>
-                      <td className="px-5 py-4 text-slate-400 font-mono text-[11px]">
-                        {p.paidAt ? new Date(p.paidAt).toLocaleDateString() : 'N/A'}
-                      </td>
-                      <td className="px-5 py-4">
-                        <span
-                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${p.status === 'Success'
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                            : p.status === 'Refunded'
-                              ? 'bg-rose-50 text-rose-700 border-rose-200'
-                              : 'bg-amber-50 text-amber-700 border-amber-200'
-                            }`}
-                        >
-                          {p.status}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4 text-right">
-                        {p.status === 'Success' && (
-                          <button
-                            onClick={() => handleRefund(p._id, p.transactionId)}
-                            className="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold cursor-pointer"
-                          >
-                            Refund
-                          </button>
-                        )}
-                      </td>
+        {/* Main Content: Left side Compact Table, Right side Large Graph (STRICTLY SINGLE LINE) */}
+        <div className="relative z-10 flex flex-row items-center justify-between gap-6 lg:gap-10 w-full">
+          {/* Left Side: User & Email / Project Name Table (Enlarged, Clear & Interactive to Dashboard) */}
+          <div className="flex-1 max-w-xl min-w-0">
+            <div className="rounded-2xl border border-slate-200/90 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/70 overflow-hidden shadow-sm backdrop-blur-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200/90 dark:border-zinc-800 text-[11px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-wider bg-slate-100/70 dark:bg-zinc-900/60">
+                      <th className="px-4 py-3">User & Email</th>
+                      <th className="px-4 py-3 text-right">Project Name</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/70">
+                    {(projectTransactions || []).slice(0, 4).map((item) => {
+                      const projectName = item.projectId === 'hrms'
+                        ? 'HRMS Project'
+                        : 'Hotel Management System';
 
-        {/* View 3: Subscription Plans (Growth, Professional, Enterprise) with Per-Project Isolation */}
-        {activeTab === 'plans' && (
-          <div className="py-10 px-4 sm:px-6 lg:px-8 bg-[#F8F9FE] dark:bg-slate-950/60 rounded-3xl animate-fadeIn">
-            {/* Project Scope Switcher Bar */}
-            <div className="flex flex-col items-center justify-center mb-8 text-center">
-              <div className="inline-flex items-center p-1.5 bg-slate-200/80 dark:bg-slate-800/90 rounded-2xl border border-slate-300/80 dark:border-slate-700 shadow-sm gap-2">
-                <button
-                  onClick={() => {
-                    setActivePlanProjectId('hrms');
-                    showToast('✓ Switched to HRMS Project Subscription Plans!');
-                  }}
-                  className={`flex items-center gap-2 px-5 py-2 rounded-xl font-black text-xs transition-all cursor-pointer ${activePlanProjectId === 'hrms'
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
-                    }`}
-                >
-                  <Layers className="w-4 h-4" />
-                  <span>HRMS Project</span>
-                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase ${activePlanProjectId === 'hrms' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'
-                    }`}>
-                    {projectSubscriptionConfig.hrms.selectedPlanId}
-                  </span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setActivePlanProjectId('hotel');
-                    showToast('✓ Switched to Hotel Management Project Subscription Plans!');
-                  }}
-                  className={`flex items-center gap-2 px-5 py-2 rounded-xl font-black text-xs transition-all cursor-pointer ${activePlanProjectId === 'hotel'
-                    ? 'bg-orange-600 text-white shadow-md shadow-orange-500/25'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
-                    }`}
-                >
-                  <Building2 className="w-4 h-4" />
-                  <span>Hotel Management System</span>
-                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase ${activePlanProjectId === 'hotel' ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700'
-                    }`}>
-                    {projectSubscriptionConfig.hotel.selectedPlanId}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Choose Billing Cycle Toggle */}
-            <div className="flex flex-col items-center justify-center mb-10 text-center">
-              <span className="text-[11px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase mb-3 font-sans">
-                CHOOSE YOUR BILLING CYCLE
-              </span>
-              <div className="inline-flex items-center p-1 bg-slate-200/70 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 shadow-inner">
-                <button
-                  onClick={() => setPlanBillingCycle('monthly')}
-                  className={`px-7 py-2 rounded-full font-bold text-xs transition-all cursor-pointer ${planBillingCycle === 'monthly'
-                    ? 'bg-[#7065F0] text-white shadow-md shadow-[#7065F0]/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                >
-                  Monthly
-                </button>
-                <button
-                  onClick={() => setPlanBillingCycle('yearly')}
-                  className={`px-6 py-2 rounded-full font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 ${planBillingCycle === 'yearly'
-                    ? 'bg-[#7065F0] text-white shadow-md shadow-[#7065F0]/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                >
-                  <span>Yearly</span>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${planBillingCycle === 'yearly'
-                      ? 'bg-white/20 text-white'
-                      : 'bg-[#EEECFD] dark:bg-purple-950/60 text-[#7065F0] dark:text-purple-300'
-                      }`}
-                  >
-                    10% Off
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* 3 Cards Side-by-Side (Designer Blue Theme with 3D Flip & Full Feature Suite) */}
-            <div className="grid grid-cols-3 gap-4 lg:gap-6 items-stretch w-full max-w-6xl mx-auto">
-              {plansData.map((plan) => {
-                const curPrice = planBillingCycle === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice;
-                const curStrike = planBillingCycle === 'yearly' ? plan.yearlyStrikePrice : plan.strikePrice;
-                const isSelected = selectedPlanId === plan.id;
-                const isFlipped = Boolean(flippedPlans[plan.id]);
-
-                // Designer subtitle tags
-                const designerTag =
-                  plan.id === 'growth'
-                    ? 'Starter Suite'
-                    : plan.id === 'professional'
-                      ? 'Growth & Scaling'
-                      : 'Full Enterprise';
-
-                return (
-                  <div
-                    key={plan.id}
-                    className="flip-card-container group"
-                  >
-                    <div className={`flip-card-inner ${isFlipped ? 'is-flipped' : ''}`}>
-                      {/* FRONT FACE OF CARD (Designer Blue, Full Features, Tap anywhere to flip) */}
-                      <div
-                        onClick={() => togglePlanFlip(plan.id)}
-                        className={`flip-card-front p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer relative overflow-hidden ${isSelected
-                          ? 'border-2 border-blue-600 dark:border-blue-500 ring-4 ring-blue-500/20 shadow-2xl shadow-blue-500/20 card-designer-glow-selected bg-gradient-to-b from-blue-50/80 via-white to-white dark:from-blue-950/40 dark:via-slate-900 dark:to-slate-900'
-                          : 'border border-slate-200/90 dark:border-slate-800 shadow-md card-designer-glow bg-white dark:bg-slate-900 hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-xl'
-                          }`}
-                      >
-                        {/* Decorative Designer Watermark Aura */}
-                        <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
-
-                        <div>
-                          {/* Designer Header: Plan Name + Subtitle Pill (No Black Buttons) */}
-                          <div className="flex items-center justify-between gap-2">
-                            <div>
-                              <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 block mb-0.5">
-                                {designerTag}
-                              </span>
-                              <h3
-                                className={`text-xl sm:text-2xl font-black tracking-tight ${isSelected ? 'text-blue-950 dark:text-white' : 'text-slate-900 dark:text-white'
-                                  }`}
-                              >
-                                {plan.name}
-                              </h3>
-                            </div>
-                            <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-800/80 flex items-center gap-1 shadow-2xs">
-                              <RotateCcw className="w-2.5 h-2.5" />
-                              Flip ↻
-                            </span>
-                          </div>
-
-                          {/* Tagline */}
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 min-h-[30px] leading-snug">
-                            {plan.tagline}
-                          </p>
-
-                          {/* Designer Price Block */}
-                          <div className="flex items-baseline gap-1 mt-3 pb-3 border-b border-blue-100/80 dark:border-slate-800">
-                            <span className="text-sm font-bold text-slate-400 line-through mr-1 font-mono">
-                              {curStrike}
-                            </span>
-                            <span className="text-lg font-black text-slate-900 dark:text-white align-top">
-                              $
-                            </span>
-                            <span className="text-4xl font-black text-slate-900 dark:text-white font-mono leading-none tracking-tight">
-                              {curPrice}
-                            </span>
-                            <span className="text-xs text-slate-500 font-medium ml-1">
-                              /month <span className="text-[10px] text-slate-400 hidden xl:inline">(excluding GST)</span>
-                            </span>
-                          </div>
-
-                          {/* Features List (All 15 Features, High Contrast & Designer Styled) */}
-                          <ul className="space-y-2 pt-3">
-                            {plan.features.map((feat, fIdx) => (
-                              <li key={fIdx} className="flex items-center gap-2.5 text-xs leading-tight">
-                                {feat.enabled ? (
-                                  <span className="w-4 h-4 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 flex items-center justify-center text-[10px] font-black shrink-0 border border-blue-200 dark:border-blue-800">
-                                    ✓
-                                  </span>
-                                ) : (
-                                  <span className="w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-[10px] font-bold shrink-0">
-                                    ×
-                                  </span>
-                                )}
-                                <span
-                                  className={`truncate ${feat.enabled
-                                    ? 'text-slate-800 dark:text-slate-100 font-bold'
-                                    : 'text-slate-400 dark:text-slate-500 font-normal line-through opacity-75'
-                                    }`}
-                                >
-                                  {feat.label}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-
-                          {/* Divider */}
-                          <div className="border-t border-slate-200 dark:border-slate-800 my-3" />
-
-                          {/* Add-on Plans Available */}
-                          <div className="flex items-center gap-1.5 text-xs font-black text-blue-700 dark:text-blue-400">
-                            <span className="w-4 h-4 rounded-full bg-blue-100 dark:bg-blue-950/70 flex items-center justify-center text-[10px] font-black text-blue-700 dark:text-blue-300">
-                              ✓
-                            </span>
-                            <span className="truncate">Add-on Plans Available</span>
-                          </div>
-                        </div>
-
-                        {/* Card ke neeche buttons: Designer SEE ORDERS + Start Free Trial */}
-                        <div className="space-y-2.5 pt-4 mt-auto">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPlanId(plan.id);
-                              setCheckoutTargetPlan(plan.name);
-                              setIsSubscriptionModalOpen(true);
-                            }}
-                            className="designer-order-btn w-full py-3 px-4 rounded-xl cursor-pointer text-white flex items-center justify-between group shadow-md hover:shadow-lg"
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <span className="w-7 h-7 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-xs">
-                                <CreditCard className="w-4 h-4" />
-                              </span>
-                              <span className="tracking-wider uppercase text-xs font-black">SEE ORDERS</span>
-                            </div>
-                            <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                              <ChevronRight className="w-4 h-4" />
-                            </span>
-                          </button>
-
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPlanId(plan.id);
-                              setProjectSubscriptionConfig((prev) => ({
-                                ...prev,
-                                [activePlanProjectId]: {
-                                  ...prev[activePlanProjectId],
-                                  selectedPlanId: plan.id,
-                                  status: 'trial',
-                                },
-                              }));
-                              showToast(
-                                `✓ Started 14-day Free Trial for ${plan.name} Plan on ${activePlanProjectId === 'hrms' ? 'HRMS Project' : 'Hotel Management System'
-                                }! Other project plans remain completely unaffected.`
-                              );
-                            }}
-                            className="designer-trial-btn w-full py-2.5 px-4 rounded-xl font-black text-xs cursor-pointer text-blue-700 dark:text-blue-300 flex items-center justify-center gap-2 border-2 border-blue-300/80 dark:border-blue-700 shadow-xs hover:border-blue-500"
-                          >
-                            <Sparkles className="w-4 h-4 text-blue-600" />
-                            <span>Start 14-Day Free Trial</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* BACK FACE OF CARD (Designer Blue, Tap anywhere to flip back) */}
-                      <div
-                        onClick={() => togglePlanFlip(plan.id)}
-                        className="flip-card-back p-5 sm:p-6 flex flex-col justify-between border-2 border-blue-500 dark:border-blue-500 ring-4 ring-blue-500/20 shadow-2xl bg-gradient-to-b from-blue-50/95 via-white to-white dark:from-blue-950/40 dark:via-slate-900 dark:to-slate-900 cursor-pointer relative overflow-hidden"
-                      >
-                        {/* Decorative Designer Aura */}
-                        <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/15 rounded-full blur-2xl pointer-events-none" />
-
-                        <div>
-                          {/* Back Face Header */}
-                          <div className="flex items-center justify-between border-b border-blue-100 dark:border-blue-900/60 pb-3">
-                            <div className="flex items-center gap-2.5">
-                              <span className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-xs">
-                                <ShoppingBag className="w-4 h-4" />
-                              </span>
-                              <div>
-                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 block">
-                                  Order Overview
-                                </span>
-                                <h3 className="text-lg font-black text-slate-900 dark:text-white">
-                                  {plan.name} Tier
-                                </h3>
-                              </div>
-                            </div>
-
-                            <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-800">
-                              <RotateCcw className="w-3 h-3" />
-                              Wapas ↻
-                            </span>
-                          </div>
-
-                          {/* Order Details */}
-                          <div className="mt-4 space-y-3">
-                            <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-blue-100 dark:border-blue-900/50 shadow-xs">
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="text-slate-500 font-medium">Assigned Project:</span>
-                                <span className="font-black text-blue-600 dark:text-blue-400 font-mono">
-                                  {activePlanProjectId === 'hrms' ? 'HRMS Project' : 'Hotel Management System'}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between text-xs mt-2 pt-2 border-t border-slate-100 dark:border-slate-700/60">
-                                <span className="text-slate-500 font-medium">Tenant Organization:</span>
-                                <span className="font-bold text-slate-900 dark:text-white font-mono truncate max-w-[150px]">
-                                  {selectedOrg?.companyName || 'Apex Enterprises'}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between text-xs mt-2 pt-2 border-t border-slate-100 dark:border-slate-700/60">
-                                <span className="text-slate-500 font-medium">Selected Cycle:</span>
-                                <span className="font-bold text-blue-600 dark:text-blue-400 uppercase text-[11px]">
-                                  {planBillingCycle === 'yearly' ? 'Yearly (10% Discount)' : 'Monthly'}
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Price Breakdown */}
-                            <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="text-slate-600 dark:text-slate-300">Monthly Rate:</span>
-                                <span className="font-bold text-slate-900 dark:text-white font-mono">${curPrice}/mo</span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <span className="text-slate-600 dark:text-slate-300">Total Billed:</span>
-                                <span className="font-black text-blue-600 dark:text-blue-400 font-mono text-base">
-                                  {planBillingCycle === 'yearly' ? `$${Number(curPrice) * 12}/year` : `$${curPrice}/month`}
-                                </span>
-                              </div>
-                              <div className="text-[10px] text-blue-700 dark:text-blue-300 pt-1.5 border-t border-blue-500/20 font-medium">
-                                ✓ Instant access to all unlocked modules & roles
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Back Face Actions: Designer SEE ORDERS Button */}
-                        <div className="space-y-2 pt-3 mt-auto">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPlanId(plan.id);
-                              setCheckoutTargetPlan(plan.name);
-                              setIsSubscriptionModalOpen(true);
-                            }}
-                            className="designer-order-btn w-full py-2.5 px-4 rounded-xl cursor-pointer text-white flex items-center justify-between group"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="w-6 h-6 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-xs">
-                                <CreditCard className="w-3.5 h-3.5" />
-                              </span>
-                              <span className="tracking-wider uppercase text-[11px] font-black">CONFIRM & SEE ORDERS</span>
-                            </div>
-                            <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                              <ChevronRight className="w-3.5 h-3.5" />
-                            </span>
-                          </button>
-
-                          <div className="text-center">
-                            <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold hover:underline transition-colors flex items-center justify-center gap-1">
-                              <RotateCcw className="w-2.5 h-2.5" />
-                              Tap card to flip back to features
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="mt-10 w-full pt-8 border-t border-slate-200/80 dark:border-slate-800 space-y-4">
-              {/* Top Action Buttons (Export, Filter, + Add Client) */}
-              <div className="flex items-center justify-end gap-2.5">
-                <button
-                  onClick={handleExportClients}
-                  className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-2xs cursor-pointer transition-all"
-                >
-                  <Upload className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Export</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setClientActiveTab('All Clients');
-                    setClientPlanFilter('all');
-                    setClientStatusFilter('all');
-                    setClientSearch('');
-                    showToast('✓ Filters reset to default view.');
-                  }}
-                  className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-2xs cursor-pointer transition-all"
-                >
-                  <Filter className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Filter</span>
-                </button>
-              </div>
-
-              {/* Main Table Card (Filter Navigation + Full Width Client Ledger) */}
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
-                {/* Tabs & Search Filter Controls Bar */}
-                <div className="px-5 pt-4 pb-2 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
-                  {/* Left Underline Tabs */}
-                  <div className="flex items-center gap-6 overflow-x-auto">
-                    {(['All Clients', 'Active', 'Trial', 'Expiring Soon', 'Cancelled'] as const).map((tab) => {
-                      const isActive = clientActiveTab === tab;
                       return (
-                        <button
-                          key={tab}
+                        <tr
+                          key={item.id}
                           onClick={() => {
-                            setClientActiveTab(tab);
-                            setClientPage(1);
+                            const targetProj = (projects || []).find((p) => p.id === item.projectId || (item.projectId === 'hrms' ? p.id.includes('hrms') : p.id.includes('hotel')));
+                            if (targetProj) setSelectedProject(targetProj);
+                            setActiveView('dashboard');
+                            showToast(`✓ Switched to Dashboard for ${item.customerName} (${projectName})`);
                           }}
-                          className={`pb-3 text-xs transition-all relative whitespace-nowrap cursor-pointer ${isActive
-                            ? 'text-[#5E48E8] dark:text-indigo-400 font-bold'
-                            : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300 font-medium'
-                            }`}
+                          title={`Click to open Dashboard for ${item.customerName}`}
+                          className="hover:bg-blue-50/70 dark:hover:bg-zinc-800/60 transition-all cursor-pointer group active:scale-[0.995]"
                         >
-                          <span>{tab}</span>
-                          {isActive && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5E48E8] dark:bg-indigo-400 rounded-full" />
-                          )}
-                        </button>
+                          <td className="px-4 py-3">
+                            <div className="flex flex-col">
+                              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                {item.customerName}
+                              </span>
+                              <span className="text-xs text-slate-500 dark:text-zinc-400 font-medium truncate max-w-xs mt-0.5">
+                                {item.customerEmail}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 border border-slate-200 dark:border-zinc-800 shadow-2xs group-hover:border-blue-300 dark:group-hover:border-blue-700 whitespace-nowrap transition-colors">
+                              <span className={`w-2 h-2 rounded-full ${item.projectId === 'hrms' ? 'bg-blue-500' : 'bg-orange-500'}`} />
+                              {projectName}
+                              <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
+                            </span>
+                          </td>
+                        </tr>
                       );
                     })}
-                  </div>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
-                  {/* Right Filter Inputs & Dropdowns */}
-                  <div className="flex flex-wrap items-center gap-2 pb-2">
-                    {/* Search Input with 360° Looping Border Transition */}
-                    <div className="w-52 sm:w-60">
-                      <div className="search-loop-container group">
-                        <div className="search-loop-border" />
-                        <div className="relative z-10 flex items-center bg-white dark:bg-slate-900 rounded-[0.75rem] py-0.5 px-1 overflow-hidden">
-                          <div className="search-loop-shimmer" />
-                          <div className="pl-2 pr-1.5 py-1 flex items-center text-[#5E48E8] dark:text-indigo-400 shrink-0">
-                            <Search className="w-3.5 h-3.5" />
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="Search in clients..."
-                            value={clientSearch}
-                            onChange={(e) => {
-                              setClientSearch(e.target.value);
-                              setClientPage(1);
-                            }}
-                            className="w-full bg-transparent py-1 pr-2 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none font-medium z-20"
-                          />
-                          {clientSearch && (
-                            <button
-                              onClick={() => {
-                                setClientSearch('');
-                                setClientPage(1);
-                              }}
-                              className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white mr-1 transition-all cursor-pointer z-20"
-                              title="Clear Search"
+          {/* Right Side: Graph in corner (Bada / Prominent Size) */}
+          <div className="shrink-0 flex flex-col items-center justify-center relative p-2">
+            {/* Top Indicator Badges above graph */}
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-3">
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800 text-orange-600 dark:text-orange-400 text-[11px] font-black tracking-wide shadow-2xs whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-orange-500 shadow-xs shadow-orange-500 animate-pulse" />
+                <span>Projects: <strong className="text-slate-900 dark:text-white">2</strong></span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-zinc-900 border border-cyan-200 dark:border-zinc-800 text-cyan-600 dark:text-cyan-400 text-[11px] font-black tracking-wide shadow-2xs whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-xs shadow-cyan-400 animate-pulse" />
+                <span>Clients: <strong className="text-slate-900 dark:text-white">1 Org</strong></span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-zinc-900 border border-emerald-200 dark:border-zinc-800 text-emerald-600 dark:text-emerald-400 text-[11px] font-black tracking-wide shadow-2xs whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-xs shadow-emerald-400 animate-pulse" />
+                <span>Income: <strong className="text-slate-900 dark:text-white">₹8.42L</strong></span>
+              </div>
+            </div>
+
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 flex items-center justify-center">
+              {/* Outer Glowing Pulsing Aura */}
+              <div className="absolute inset-0 rounded-full animate-pulse-glow-ring" />
+
+              {/* Layer 1: Outermost Rotating Dashed Orbit (Clockwise Continuous Loop) */}
+              <svg className="absolute inset-0 w-full h-full animate-circle-spin-slow pointer-events-none" viewBox="0 0 260 260">
+                <circle
+                  cx="130"
+                  cy="130"
+                  r="120"
+                  fill="none"
+                  stroke="url(#outerRingGrad)"
+                  strokeWidth="2.5"
+                  strokeDasharray="6 12 18 12"
+                  strokeLinecap="round"
+                  opacity="0.75"
+                />
+                <circle cx="250" cy="130" r="4.5" fill="#38bdf8" filter="drop-shadow(0 0 6px #38bdf8)" />
+                <circle cx="10" cy="130" r="4.5" fill="#f97316" filter="drop-shadow(0 0 6px #f97316)" />
+                <defs>
+                  <linearGradient id="outerRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#38bdf8" />
+                    <stop offset="50%" stopColor="#a855f7" />
+                    <stop offset="100%" stopColor="#f97316" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {/* Layer 2: Middle Segmented Multi-Color Donut Rings (Counter-Clockwise Rotation Loop) */}
+              <svg className="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)] animate-circle-spin-reverse pointer-events-none" viewBox="0 0 240 240">
+                {/* Segment 1: Total Projects (Orange Arc) */}
+                <circle
+                  cx="120"
+                  cy="120"
+                  r="95"
+                  fill="none"
+                  stroke="#f97316"
+                  strokeWidth="11"
+                  strokeDasharray="140 460"
+                  strokeDashoffset="0"
+                  strokeLinecap="round"
+                  className="filter drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]"
+                />
+                {/* Segment 2: Total Clients (Cyan Arc) */}
+                <circle
+                  cx="120"
+                  cy="120"
+                  r="95"
+                  fill="none"
+                  stroke="#06b6d4"
+                  strokeWidth="11"
+                  strokeDasharray="160 440"
+                  strokeDashoffset="-165"
+                  strokeLinecap="round"
+                  className="filter drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                />
+                {/* Segment 3: Total Income (Emerald Arc) */}
+                <circle
+                  cx="120"
+                  cy="120"
+                  r="95"
+                  fill="none"
+                  stroke="#10b981"
+                  strokeWidth="11"
+                  strokeDasharray="220 380"
+                  strokeDashoffset="-350"
+                  strokeLinecap="round"
+                  className="filter drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+                />
+              </svg>
+
+              {/* Layer 3: Inner Conic Center Hub (White in Light, Black in Dark) */}
+              <div className="absolute inset-10 sm:inset-12 rounded-full bg-white dark:bg-black border border-slate-200 dark:border-zinc-800 shadow-xl flex flex-col items-center justify-center p-3 text-center transition-colors">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 via-cyan-500 to-emerald-400 text-white flex items-center justify-center mb-1 shadow-md shadow-indigo-500/30">
+                  <TrendingUp className="w-4 h-4" />
+                </div>
+                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">₹8.42L</div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Total Income</span>
+                <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 font-semibold">2 Projects • 1 Org</span>
+              </div>
+            </div>
+
+            {/* Circular Legend Indicators below */}
+            <div className="flex items-center gap-4 mt-3 text-[11px] font-bold">
+              <span className="flex items-center gap-1.5 text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                <span className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-xs shadow-orange-500" />
+                Projects (2)
+              </span>
+              <span className="flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 whitespace-nowrap">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-xs shadow-cyan-400" />
+                Clients (1 Org)
+              </span>
+              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-xs shadow-emerald-400" />
+                Income (₹8.42L)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* View 3: Subscription Plans (Growth, Professional, Enterprise) with Per-Project Isolation */}
+      {activeTab === 'plans' && (
+        <div className="py-10 px-4 sm:px-6 lg:px-8 bg-[#F8F9FE] dark:bg-slate-950/60 rounded-3xl animate-fadeIn">
+          {/* Project Scope Switcher Bar */}
+          <div className="flex flex-col items-center justify-center mb-8 text-center">
+            <div className="inline-flex items-center p-1.5 bg-slate-200/80 dark:bg-slate-800/90 rounded-2xl border border-slate-300/80 dark:border-slate-700 shadow-sm gap-2">
+              <button
+                onClick={() => {
+                  setActivePlanProjectId('hrms');
+                  showToast('✓ Switched to HRMS Project Subscription Plans!');
+                }}
+                className={`flex items-center gap-2 px-5 py-2 rounded-xl font-black text-xs transition-all cursor-pointer ${activePlanProjectId === 'hrms'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
+                  : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                  }`}
+              >
+                <Layers className="w-4 h-4" />
+                <span>HRMS Project</span>
+                <span className={`text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase ${activePlanProjectId === 'hrms' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'
+                  }`}>
+                  {projectSubscriptionConfig.hrms.selectedPlanId}
+                </span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActivePlanProjectId('hotel');
+                  showToast('✓ Switched to Hotel Management Project Subscription Plans!');
+                }}
+                className={`flex items-center gap-2 px-5 py-2 rounded-xl font-black text-xs transition-all cursor-pointer ${activePlanProjectId === 'hotel'
+                  ? 'bg-orange-600 text-white shadow-md shadow-orange-500/25'
+                  : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                  }`}
+              >
+                <Building2 className="w-4 h-4" />
+                <span>Hotel Management System</span>
+                <span className={`text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase ${activePlanProjectId === 'hotel' ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700'
+                  }`}>
+                  {projectSubscriptionConfig.hotel.selectedPlanId}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Choose Billing Cycle Toggle */}
+          <div className="flex flex-col items-center justify-center mb-10 text-center">
+            <span className="text-[11px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase mb-3 font-sans">
+              CHOOSE YOUR BILLING CYCLE
+            </span>
+            <div className="inline-flex items-center p-1 bg-slate-200/70 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 shadow-inner">
+              <button
+                onClick={() => setPlanBillingCycle('monthly')}
+                className={`px-7 py-2 rounded-full font-bold text-xs transition-all cursor-pointer ${planBillingCycle === 'monthly'
+                  ? 'bg-[#7065F0] text-white shadow-md shadow-[#7065F0]/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setPlanBillingCycle('yearly')}
+                className={`px-6 py-2 rounded-full font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 ${planBillingCycle === 'yearly'
+                  ? 'bg-[#7065F0] text-white shadow-md shadow-[#7065F0]/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+              >
+                <span>Yearly</span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${planBillingCycle === 'yearly'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-[#EEECFD] dark:bg-purple-950/60 text-[#7065F0] dark:text-purple-300'
+                    }`}
+                >
+                  10% Off
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* 3 Cards Side-by-Side (Designer Blue Theme with 3D Flip & Full Feature Suite) */}
+          <div className="grid grid-cols-3 gap-4 lg:gap-6 items-stretch w-full max-w-6xl mx-auto">
+            {plansData.map((plan) => {
+              const curPrice = planBillingCycle === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice;
+              const curStrike = planBillingCycle === 'yearly' ? plan.yearlyStrikePrice : plan.strikePrice;
+              const isSelected = selectedPlanId === plan.id;
+              const isFlipped = Boolean(flippedPlans[plan.id]);
+
+              // Designer subtitle tags
+              const designerTag =
+                plan.id === 'growth'
+                  ? 'Starter Suite'
+                  : plan.id === 'professional'
+                    ? 'Growth & Scaling'
+                    : 'Full Enterprise';
+
+              return (
+                <div
+                  key={plan.id}
+                  className="flip-card-container group"
+                >
+                  <div className={`flip-card-inner ${isFlipped ? 'is-flipped' : ''}`}>
+                    {/* FRONT FACE OF CARD (Designer Blue, Full Features, Tap anywhere to flip) */}
+                    <div
+                      onClick={() => togglePlanFlip(plan.id)}
+                      className={`flip-card-front p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer relative overflow-hidden ${isSelected
+                        ? 'border-2 border-blue-600 dark:border-blue-500 ring-4 ring-blue-500/20 shadow-2xl shadow-blue-500/20 card-designer-glow-selected bg-gradient-to-b from-blue-50/80 via-white to-white dark:from-blue-950/40 dark:via-slate-900 dark:to-slate-900'
+                        : 'border border-slate-200/90 dark:border-slate-800 shadow-md card-designer-glow bg-white dark:bg-slate-900 hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-xl'
+                        }`}
+                    >
+                      {/* Decorative Designer Watermark Aura */}
+                      <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+
+                      <div>
+                        {/* Designer Header: Plan Name + Subtitle Pill (No Black Buttons) */}
+                        <div className="flex items-center justify-between gap-2">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 block mb-0.5">
+                              {designerTag}
+                            </span>
+                            <h3
+                              className={`text-xl sm:text-2xl font-black tracking-tight ${isSelected ? 'text-blue-950 dark:text-white' : 'text-slate-900 dark:text-white'
+                                }`}
                             >
-                              <X className="w-3 h-3" />
-                            </button>
-                          )}
+                              {plan.name}
+                            </h3>
+                          </div>
+                          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-800/80 flex items-center gap-1 shadow-2xs">
+                            <RotateCcw className="w-2.5 h-2.5" />
+                            Flip ↻
+                          </span>
                         </div>
+
+                        {/* Tagline */}
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 min-h-[30px] leading-snug">
+                          {plan.tagline}
+                        </p>
+
+                        {/* Designer Price Block */}
+                        <div className="flex items-baseline gap-1 mt-3 pb-3 border-b border-blue-100/80 dark:border-slate-800">
+                          <span className="text-sm font-bold text-slate-400 line-through mr-1 font-mono">
+                            {curStrike}
+                          </span>
+                          <span className="text-lg font-black text-slate-900 dark:text-white align-top">
+                            $
+                          </span>
+                          <span className="text-4xl font-black text-slate-900 dark:text-white font-mono leading-none tracking-tight">
+                            {curPrice}
+                          </span>
+                          <span className="text-xs text-slate-500 font-medium ml-1">
+                            /month <span className="text-[10px] text-slate-400 hidden xl:inline">(excluding GST)</span>
+                          </span>
+                        </div>
+
+                        {/* Features List (All 15 Features, High Contrast & Designer Styled) */}
+                        <ul className="space-y-2 pt-3">
+                          {plan.features.map((feat, fIdx) => (
+                            <li key={fIdx} className="flex items-center gap-2.5 text-xs leading-tight">
+                              {feat.enabled ? (
+                                <span className="w-4 h-4 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 flex items-center justify-center text-[10px] font-black shrink-0 border border-blue-200 dark:border-blue-800">
+                                  ✓
+                                </span>
+                              ) : (
+                                <span className="w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-[10px] font-bold shrink-0">
+                                  ×
+                                </span>
+                              )}
+                              <span
+                                className={`truncate ${feat.enabled
+                                  ? 'text-slate-800 dark:text-slate-100 font-bold'
+                                  : 'text-slate-400 dark:text-slate-500 font-normal line-through opacity-75'
+                                  }`}
+                              >
+                                {feat.label}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Divider */}
+                        <div className="border-t border-slate-200 dark:border-slate-800 my-3" />
+
+                        {/* Add-on Plans Available */}
+                        <div className="flex items-center gap-1.5 text-xs font-black text-blue-700 dark:text-blue-400">
+                          <span className="w-4 h-4 rounded-full bg-blue-100 dark:bg-blue-950/70 flex items-center justify-center text-[10px] font-black text-blue-700 dark:text-blue-300">
+                            ✓
+                          </span>
+                          <span className="truncate">Add-on Plans Available</span>
+                        </div>
+                      </div>
+
+                      {/* Card ke neeche buttons: Designer SEE ORDERS + Start Free Trial */}
+                      <div className="space-y-2.5 pt-4 mt-auto">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPlanId(plan.id);
+                            setCheckoutTargetPlan(plan.name);
+                            setIsSubscriptionModalOpen(true);
+                          }}
+                          className="designer-order-btn w-full py-3 px-4 rounded-xl cursor-pointer text-white flex items-center justify-between group shadow-md hover:shadow-lg"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-7 h-7 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-xs">
+                              <CreditCard className="w-4 h-4" />
+                            </span>
+                            <span className="tracking-wider uppercase text-xs font-black">SEE ORDERS</span>
+                          </div>
+                          <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                            <ChevronRight className="w-4 h-4" />
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPlanId(plan.id);
+                            setProjectSubscriptionConfig((prev) => ({
+                              ...prev,
+                              [activePlanProjectId]: {
+                                ...prev[activePlanProjectId],
+                                selectedPlanId: plan.id,
+                                status: 'trial',
+                              },
+                            }));
+                            showToast(
+                              `✓ Started 14-day Free Trial for ${plan.name} Plan on ${activePlanProjectId === 'hrms' ? 'HRMS Project' : 'Hotel Management System'
+                              }! Other project plans remain completely unaffected.`
+                            );
+                          }}
+                          className="designer-trial-btn w-full py-2.5 px-4 rounded-xl font-black text-xs cursor-pointer text-blue-700 dark:text-blue-300 flex items-center justify-center gap-2 border-2 border-blue-300/80 dark:border-blue-700 shadow-xs hover:border-blue-500"
+                        >
+                          <Sparkles className="w-4 h-4 text-blue-600" />
+                          <span>Start 14-Day Free Trial</span>
+                        </button>
                       </div>
                     </div>
 
-                    {/* All Plans Dropdown */}
-                    <div className="relative">
-                      <select
-                        value={clientPlanFilter}
-                        onChange={(e) => {
-                          setClientPlanFilter(e.target.value as any);
-                          setClientPage(1);
-                        }}
-                        className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer appearance-none pr-7 shadow-2xs hover:bg-slate-50"
-                      >
-                        <option value="all">All Plans</option>
-                        <option value="Growth">Growth</option>
-                        <option value="Professional">Professional</option>
-                        <option value="Enterprise">Enterprise</option>
-                      </select>
-                      <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
+                    {/* BACK FACE OF CARD (Designer Blue, Tap anywhere to flip back) */}
+                    <div
+                      onClick={() => togglePlanFlip(plan.id)}
+                      className="flip-card-back p-5 sm:p-6 flex flex-col justify-between border-2 border-blue-500 dark:border-blue-500 ring-4 ring-blue-500/20 shadow-2xl bg-gradient-to-b from-blue-50/95 via-white to-white dark:from-blue-950/40 dark:via-slate-900 dark:to-slate-900 cursor-pointer relative overflow-hidden"
+                    >
+                      {/* Decorative Designer Aura */}
+                      <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/15 rounded-full blur-2xl pointer-events-none" />
 
-                    {/* All Status Dropdown */}
-                    <div className="relative">
-                      <select
-                        value={clientStatusFilter}
-                        onChange={(e) => {
-                          setClientStatusFilter(e.target.value as any);
-                          setClientPage(1);
-                        }}
-                        className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer appearance-none pr-7 shadow-2xs hover:bg-slate-50"
-                      >
-                        <option value="all">All Status</option>
-                        <option value="Active">Active</option>
-                        <option value="Trial">Trial</option>
-                        <option value="Expiring Soon">Expiring Soon</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
-                      <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-
-                    {/* Columns Dropdown Toggle */}
-                    <div className="relative">
-                      <button
-                        onClick={() => setIsColumnsDropdownOpen((prev) => !prev)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 cursor-pointer shadow-2xs hover:bg-slate-50"
-                      >
-                        <LayoutGrid className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Columns</span>
-                        <ChevronDown className="w-3 h-3 text-slate-400" />
-                      </button>
-
-                      {isColumnsDropdownOpen && (
-                        <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-2.5 z-20 space-y-2 text-xs">
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
-                            Toggle Visible Columns
+                      <div>
+                        {/* Back Face Header */}
+                        <div className="flex items-center justify-between border-b border-blue-100 dark:border-blue-900/60 pb-3">
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-xs">
+                              <ShoppingBag className="w-4 h-4" />
+                            </span>
+                            <div>
+                              <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 block">
+                                Order Overview
+                              </span>
+                              <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                                {plan.name} Tier
+                              </h3>
+                            </div>
                           </div>
-                          <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
-                            <input
-                              type="checkbox"
-                              checked={visibleColumns.planStatus}
-                              onChange={(e) =>
-                                setVisibleColumns((p) => ({ ...p, planStatus: e.target.checked }))
-                              }
-                              className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
-                            />
-                            <span>Plan & Status</span>
-                          </label>
-                          <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
-                            <input
-                              type="checkbox"
-                              checked={visibleColumns.email}
-                              onChange={(e) =>
-                                setVisibleColumns((p) => ({ ...p, email: e.target.checked }))
-                              }
-                              className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
-                            />
-                            <span>Client Email</span>
-                          </label>
-                          <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
-                            <input
-                              type="checkbox"
-                              checked={visibleColumns.featureAccess}
-                              onChange={(e) =>
-                                setVisibleColumns((p) => ({ ...p, featureAccess: e.target.checked }))
-                              }
-                              className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
-                            />
-                            <span>Feature Access</span>
-                          </label>
-                          <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
-                            <input
-                              type="checkbox"
-                              checked={visibleColumns.billingPayment}
-                              onChange={(e) =>
-                                setVisibleColumns((p) => ({ ...p, billingPayment: e.target.checked }))
-                              }
-                              className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
-                            />
-                            <span>Billing & Payment</span>
-                          </label>
-                          <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
-                            <input
-                              type="checkbox"
-                              checked={visibleColumns.nextRenewal}
-                              onChange={(e) =>
-                                setVisibleColumns((p) => ({ ...p, nextRenewal: e.target.checked }))
-                              }
-                              className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
-                            />
-                            <span>Next Renewal</span>
-                          </label>
+
+                          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-800">
+                            <RotateCcw className="w-3 h-3" />
+                            Wapas ↻
+                          </span>
                         </div>
-                      )}
+
+                        {/* Order Details */}
+                        <div className="mt-4 space-y-3">
+                          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-blue-100 dark:border-blue-900/50 shadow-xs">
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-slate-500 font-medium">Assigned Project:</span>
+                              <span className="font-black text-blue-600 dark:text-blue-400 font-mono">
+                                {activePlanProjectId === 'hrms' ? 'HRMS Project' : 'Hotel Management System'}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs mt-2 pt-2 border-t border-slate-100 dark:border-slate-700/60">
+                              <span className="text-slate-500 font-medium">Tenant Organization:</span>
+                              <span className="font-bold text-slate-900 dark:text-white font-mono truncate max-w-[150px]">
+                                {selectedOrg?.companyName || 'Apex Enterprises'}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs mt-2 pt-2 border-t border-slate-100 dark:border-slate-700/60">
+                              <span className="text-slate-500 font-medium">Selected Cycle:</span>
+                              <span className="font-bold text-blue-600 dark:text-blue-400 uppercase text-[11px]">
+                                {planBillingCycle === 'yearly' ? 'Yearly (10% Discount)' : 'Monthly'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Price Breakdown */}
+                          <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-600 dark:text-slate-300">Monthly Rate:</span>
+                              <span className="font-bold text-slate-900 dark:text-white font-mono">${curPrice}/mo</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-600 dark:text-slate-300">Total Billed:</span>
+                              <span className="font-black text-blue-600 dark:text-blue-400 font-mono text-base">
+                                {planBillingCycle === 'yearly' ? `$${Number(curPrice) * 12}/year` : `$${curPrice}/month`}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-blue-700 dark:text-blue-300 pt-1.5 border-t border-blue-500/20 font-medium">
+                              ✓ Instant access to all unlocked modules & roles
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Back Face Actions: Designer SEE ORDERS Button */}
+                      <div className="space-y-2 pt-3 mt-auto">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPlanId(plan.id);
+                            setCheckoutTargetPlan(plan.name);
+                            setIsSubscriptionModalOpen(true);
+                          }}
+                          className="designer-order-btn w-full py-2.5 px-4 rounded-xl cursor-pointer text-white flex items-center justify-between group"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-xs">
+                              <CreditCard className="w-3.5 h-3.5" />
+                            </span>
+                            <span className="tracking-wider uppercase text-[11px] font-black">CONFIRM & SEE ORDERS</span>
+                          </div>
+                          <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </span>
+                        </button>
+
+                        <div className="text-center">
+                          <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold hover:underline transition-colors flex items-center justify-center gap-1">
+                            <RotateCcw className="w-2.5 h-2.5" />
+                            Tap card to flip back to features
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Interactive Data Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="border-b border-slate-100 dark:border-slate-800 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50/50 dark:bg-slate-800/40">
-                        <th className="px-5 py-3.5">CLIENT & ORGANIZATION</th>
-                        {visibleColumns.planStatus && <th className="px-4 py-3.5">PLAN & STATUS</th>}
-                        {visibleColumns.email && <th className="px-4 py-3.5">CLIENT EMAIL</th>}
-                        {visibleColumns.featureAccess && <th className="px-4 py-3.5 w-60">FEATURE ACCESS</th>}
-                        {visibleColumns.billingPayment && <th className="px-4 py-3.5">BILLING & PAYMENT</th>}
-                        {visibleColumns.nextRenewal && <th className="px-4 py-3.5">NEXT RENEWAL</th>}
-                        <th className="px-4 py-3.5 text-center min-w-[150px]">ACTIONS</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
-                      {paginatedClients.length === 0 ? (
-                        <tr>
-                          <td colSpan={visibleColumns.email ? 7 : 6} className="px-5 py-12 text-center text-slate-400">
-                            <div className="flex flex-col items-center justify-center gap-2">
-                              <Receipt className="w-8 h-8 text-slate-300 dark:text-slate-700" />
-                              <span className="font-bold text-sm text-slate-600 dark:text-slate-400">
-                                No clients found matching filters
-                              </span>
-                              <button
-                                onClick={() => {
-                                  setClientSearch('');
-                                  setClientActiveTab('All Clients');
-                                  setClientPlanFilter('all');
-                                  setClientStatusFilter('all');
-                                }}
-                                className="mt-1 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer transition-colors"
-                              >
-                                Reset All Filters
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ) : (
-                        paginatedClients.map((client) => {
-                          return (
-                            <tr
-                              key={client.id}
-                              className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+          <div className="mt-10 w-full pt-8 border-t border-slate-200/80 dark:border-slate-800 space-y-4">
+            {/* Top Action Buttons (Export, Filter, + Add Client) */}
+            <div className="flex items-center justify-end gap-2.5">
+              <button
+                onClick={handleExportClients}
+                className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-2xs cursor-pointer transition-all"
+              >
+                <Upload className="w-3.5 h-3.5 text-slate-500" />
+                <span>Export</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setClientActiveTab('All Clients');
+                  setClientPlanFilter('all');
+                  setClientStatusFilter('all');
+                  setClientSearch('');
+                  showToast('✓ Filters reset to default view.');
+                }}
+                className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-2xs cursor-pointer transition-all"
+              >
+                <Filter className="w-3.5 h-3.5 text-slate-500" />
+                <span>Filter</span>
+              </button>
+            </div>
+
+            {/* Main Table Card (Filter Navigation + Full Width Client Ledger) */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
+              {/* Tabs & Search Filter Controls Bar */}
+              <div className="px-5 pt-4 pb-2 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                {/* Left Underline Tabs */}
+                <div className="flex items-center gap-6 overflow-x-auto">
+                  {(['All Clients', 'Active', 'Trial', 'Expiring Soon', 'Cancelled'] as const).map((tab) => {
+                    const isActive = clientActiveTab === tab;
+                    return (
+                      <button
+                        key={tab}
+                        onClick={() => {
+                          setClientActiveTab(tab);
+                          setClientPage(1);
+                        }}
+                        className={`pb-3 text-xs transition-all relative whitespace-nowrap cursor-pointer ${isActive
+                          ? 'text-[#5E48E8] dark:text-indigo-400 font-bold'
+                          : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300 font-medium'
+                          }`}
+                      >
+                        <span>{tab}</span>
+                        {isActive && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5E48E8] dark:bg-indigo-400 rounded-full" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right Filter Inputs & Dropdowns */}
+                <div className="flex flex-wrap items-center gap-2 pb-2">
+                  {/* Search Input with 360° Looping Border Transition */}
+                  <div className="w-52 sm:w-60">
+                    <div className="search-loop-container group">
+                      <div className="search-loop-border" />
+                      <div className="relative z-10 flex items-center bg-white dark:bg-slate-900 rounded-[0.75rem] py-0.5 px-1 overflow-hidden">
+                        <div className="search-loop-shimmer" />
+                        <div className="pl-2 pr-1.5 py-1 flex items-center text-[#5E48E8] dark:text-indigo-400 shrink-0">
+                          <Search className="w-3.5 h-3.5" />
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="Search in clients..."
+                          value={clientSearch}
+                          onChange={(e) => {
+                            setClientSearch(e.target.value);
+                            setClientPage(1);
+                          }}
+                          className="w-full bg-transparent py-1 pr-2 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none font-medium z-20"
+                        />
+                        {clientSearch && (
+                          <button
+                            onClick={() => {
+                              setClientSearch('');
+                              setClientPage(1);
+                            }}
+                            className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white mr-1 transition-all cursor-pointer z-20"
+                            title="Clear Search"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* All Plans Dropdown */}
+                  <div className="relative">
+                    <select
+                      value={clientPlanFilter}
+                      onChange={(e) => {
+                        setClientPlanFilter(e.target.value as any);
+                        setClientPage(1);
+                      }}
+                      className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer appearance-none pr-7 shadow-2xs hover:bg-slate-50"
+                    >
+                      <option value="all">All Plans</option>
+                      <option value="Growth">Growth</option>
+                      <option value="Professional">Professional</option>
+                      <option value="Enterprise">Enterprise</option>
+                    </select>
+                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+
+                  {/* All Status Dropdown */}
+                  <div className="relative">
+                    <select
+                      value={clientStatusFilter}
+                      onChange={(e) => {
+                        setClientStatusFilter(e.target.value as any);
+                        setClientPage(1);
+                      }}
+                      className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer appearance-none pr-7 shadow-2xs hover:bg-slate-50"
+                    >
+                      <option value="all">All Status</option>
+                      <option value="Active">Active</option>
+                      <option value="Trial">Trial</option>
+                      <option value="Expiring Soon">Expiring Soon</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+
+                  {/* Columns Dropdown Toggle */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsColumnsDropdownOpen((prev) => !prev)}
+                      className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 cursor-pointer shadow-2xs hover:bg-slate-50"
+                    >
+                      <LayoutGrid className="w-3.5 h-3.5 text-slate-500" />
+                      <span>Columns</span>
+                      <ChevronDown className="w-3 h-3 text-slate-400" />
+                    </button>
+
+                    {isColumnsDropdownOpen && (
+                      <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-2.5 z-20 space-y-2 text-xs">
+                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
+                          Toggle Visible Columns
+                        </div>
+                        <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
+                          <input
+                            type="checkbox"
+                            checked={visibleColumns.planStatus}
+                            onChange={(e) =>
+                              setVisibleColumns((p) => ({ ...p, planStatus: e.target.checked }))
+                            }
+                            className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
+                          />
+                          <span>Plan & Status</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
+                          <input
+                            type="checkbox"
+                            checked={visibleColumns.email}
+                            onChange={(e) =>
+                              setVisibleColumns((p) => ({ ...p, email: e.target.checked }))
+                            }
+                            className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
+                          />
+                          <span>Client Email</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
+                          <input
+                            type="checkbox"
+                            checked={visibleColumns.featureAccess}
+                            onChange={(e) =>
+                              setVisibleColumns((p) => ({ ...p, featureAccess: e.target.checked }))
+                            }
+                            className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
+                          />
+                          <span>Feature Access</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
+                          <input
+                            type="checkbox"
+                            checked={visibleColumns.billingPayment}
+                            onChange={(e) =>
+                              setVisibleColumns((p) => ({ ...p, billingPayment: e.target.checked }))
+                            }
+                            className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
+                          />
+                          <span>Billing & Payment</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-1 rounded-md">
+                          <input
+                            type="checkbox"
+                            checked={visibleColumns.nextRenewal}
+                            onChange={(e) =>
+                              setVisibleColumns((p) => ({ ...p, nextRenewal: e.target.checked }))
+                            }
+                            className="rounded text-[#5E48E8] focus:ring-[#5E48E8]"
+                          />
+                          <span>Next Renewal</span>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Interactive Data Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-100 dark:border-slate-800 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50/50 dark:bg-slate-800/40">
+                      <th className="px-5 py-3.5">CLIENT & ORGANIZATION</th>
+                      {visibleColumns.planStatus && <th className="px-4 py-3.5">PLAN & STATUS</th>}
+                      {visibleColumns.email && <th className="px-4 py-3.5">CLIENT EMAIL</th>}
+                      {visibleColumns.featureAccess && <th className="px-4 py-3.5 w-60">FEATURE ACCESS</th>}
+                      {visibleColumns.billingPayment && <th className="px-4 py-3.5">BILLING & PAYMENT</th>}
+                      {visibleColumns.nextRenewal && <th className="px-4 py-3.5">NEXT RENEWAL</th>}
+                      <th className="px-4 py-3.5 text-center min-w-[150px]">ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+                    {paginatedClients.length === 0 ? (
+                      <tr>
+                        <td colSpan={visibleColumns.email ? 7 : 6} className="px-5 py-12 text-center text-slate-400">
+                          <div className="flex flex-col items-center justify-center gap-2">
+                            <Receipt className="w-8 h-8 text-slate-300 dark:text-slate-700" />
+                            <span className="font-bold text-sm text-slate-600 dark:text-slate-400">
+                              No clients found matching filters
+                            </span>
+                            <button
+                              onClick={() => {
+                                setClientSearch('');
+                                setClientActiveTab('All Clients');
+                                setClientPlanFilter('all');
+                                setClientStatusFilter('all');
+                              }}
+                              className="mt-1 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer transition-colors"
                             >
-                              {/* 1. Client & Organization */}
-                              <td className="px-5 py-4">
-                                <div className="flex items-center gap-3 min-w-0">
-                                  {/* Avatar Circle with exact custom colors */}
-                                  <div
-                                    className="w-9 h-9 rounded-full text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs"
-                                    style={{ backgroundColor: client.avatarBg || '#5E48E8' }}
-                                  >
-                                    {client.customerAvatar}
-                                  </div>
-
-                                  <div className="min-w-0 flex-1">
-                                    <div className="flex items-center gap-1.5 flex-wrap">
-                                      <span className="font-bold text-slate-900 dark:text-white text-xs">
-                                        {client.customerName}
-                                      </span>
-                                      <span
-                                        className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${client.tier === 'Enterprise' || client.plan === 'Enterprise'
-                                          ? 'bg-[#EEECFD] text-[#5E48E8] dark:bg-purple-950/60 dark:text-purple-300'
-                                          : 'bg-[#FEF3EB] text-[#F2994A] dark:bg-amber-950/60 dark:text-amber-300'
-                                          }`}
-                                      >
-                                        {client.tier || client.plan}
-                                      </span>
-                                    </div>
-                                    <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate mt-0.5">
-                                      {client.companyName}
-                                    </div>
-                                    {client.customerEmail && (
-                                      <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#5E48E8] dark:text-indigo-400 mt-0.5 truncate">
-                                        <Mail className="w-3 h-3 shrink-0 text-[#5E48E8] dark:text-indigo-400" />
-                                        <a
-                                          href={`mailto:${client.customerEmail}`}
-                                          className="hover:underline truncate"
-                                          title={`Email: ${client.customerEmail}`}
-                                          onClick={(e) => e.stopPropagation()}
-                                        >
-                                          {client.customerEmail}
-                                        </a>
-                                      </div>
-                                    )}
-                                    <a
-                                      href={client.customUrl || `https://${client.subdomain}`}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="text-[10px] text-[#5E48E8] dark:text-indigo-400 hover:underline font-mono inline-block truncate max-w-[200px]"
-                                    >
-                                      {client.customUrl || `https://${client.subdomain}`}
-                                    </a>
-                                  </div>
+                              Reset All Filters
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      paginatedClients.map((client) => {
+                        return (
+                          <tr
+                            key={client.id}
+                            className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                          >
+                            {/* 1. Client & Organization */}
+                            <td className="px-5 py-4">
+                              <div className="flex items-center gap-3 min-w-0">
+                                {/* Avatar Circle with exact custom colors */}
+                                <div
+                                  className="w-9 h-9 rounded-full text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs"
+                                  style={{ backgroundColor: client.avatarBg || '#5E48E8' }}
+                                >
+                                  {client.customerAvatar}
                                 </div>
-                              </td>
 
-                              {/* 2. Plan & Status */}
-                              {visibleColumns.planStatus && (
-                                <td className="px-4 py-4">
-                                  <div>
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="font-bold text-slate-900 dark:text-white text-xs">
-                                        {client.planStatusTitle || client.plan}
-                                      </span>
-                                      <span
-                                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${client.status === 'Accepted'
-                                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 ring-1 ring-emerald-500/40 font-black'
-                                          : client.status === 'Active' || client.status === 'Approved & Upgraded'
-                                            ? 'bg-[#E8F8EE] text-[#27AE60] dark:bg-emerald-950/40 dark:text-emerald-300'
-                                            : client.status === 'Trial'
-                                              ? 'bg-[#EBF3FE] text-[#2F80ED] dark:bg-blue-950/40 dark:text-blue-300'
-                                              : client.status === 'Expiring Soon'
-                                                ? 'bg-[#FEF3EB] text-[#F2994A] dark:bg-amber-950/40 dark:text-amber-300'
-                                                : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
-                                          }`}
-                                      >
-                                        {client.status}
-                                      </span>
-                                    </div>
-                                    <div className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5 truncate">
-                                      {client.planSubtitle || client.licenseSeats}
-                                    </div>
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    <span className="font-bold text-slate-900 dark:text-white text-xs">
+                                      {client.customerName}
+                                    </span>
+                                    <span
+                                      className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${client.tier === 'Enterprise' || client.plan === 'Enterprise'
+                                        ? 'bg-[#EEECFD] text-[#5E48E8] dark:bg-purple-950/60 dark:text-purple-300'
+                                        : 'bg-[#FEF3EB] text-[#F2994A] dark:bg-amber-950/60 dark:text-amber-300'
+                                        }`}
+                                    >
+                                      {client.tier || client.plan}
+                                    </span>
                                   </div>
-                                </td>
-                              )}
-
-                              {/* 2.5 Client Email Column */}
-                              {visibleColumns.email && (
-                                <td className="px-4 py-4">
-                                  <div className="flex flex-col gap-1 min-w-[170px]">
-                                    <div className="flex items-center gap-1.5 text-slate-900 dark:text-white font-medium text-xs">
-                                      <Mail className="w-3.5 h-3.5 text-[#5E48E8] dark:text-indigo-400 shrink-0" />
+                                  <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate mt-0.5">
+                                    {client.companyName}
+                                  </div>
+                                  {client.customerEmail && (
+                                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#5E48E8] dark:text-indigo-400 mt-0.5 truncate">
+                                      <Mail className="w-3 h-3 shrink-0 text-[#5E48E8] dark:text-indigo-400" />
                                       <a
                                         href={`mailto:${client.customerEmail}`}
-                                        className="hover:text-[#5E48E8] dark:hover:text-indigo-300 hover:underline truncate max-w-[185px] font-mono text-[11.5px]"
-                                        title={`Send email to ${client.customerEmail}`}
+                                        className="hover:underline truncate"
+                                        title={`Email: ${client.customerEmail}`}
                                         onClick={(e) => e.stopPropagation()}
                                       >
                                         {client.customerEmail}
                                       </a>
                                     </div>
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-[#5E48E8] dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/60">
-                                        Registered Email
-                                      </span>
-                                      <button
-                                        type="button"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          navigator.clipboard?.writeText(client.customerEmail);
-                                          showToast(`✓ Copied: ${client.customerEmail}`);
-                                        }}
-                                        className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
-                                        title="Copy Email Address"
-                                      >
-                                        <Copy className="w-3 h-3" />
-                                      </button>
-                                    </div>
-                                  </div>
-                                </td>
-                              )}
-
-                              {/* 3. Feature Access with Purple Progress Bar */}
-                              {visibleColumns.featureAccess && (
-                                <td className="px-4 py-4">
-                                  <div className="space-y-1">
-                                    <div className="flex items-center justify-between text-[11px] font-bold text-slate-700 dark:text-slate-300">
-                                      <span>
-                                        {client.featuresCurrent || 20} / {client.featuresTotal || 25} Features
-                                      </span>
-                                      <span>{client.featuresPercent || 80}%</span>
-                                    </div>
-
-                                    {/* Progress Track */}
-                                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                                      <div
-                                        className="bg-[#7B61FF] h-1.5 rounded-full transition-all duration-300"
-                                        style={{ width: `${client.featuresPercent || 80}%` }}
-                                      />
-                                    </div>
-
-                                    {/* Feature Subtext Badge */}
-                                    {client.featureSubtextType === 'available' ? (
-                                      <div className="text-[10px] font-semibold text-[#5E48E8] dark:text-indigo-400 mt-1">
-                                        {client.featureSubtext}
-                                      </div>
-                                    ) : client.featureSubtextType === 'active' ? (
-                                      <div className="text-[10px] font-semibold text-[#27AE60] dark:text-emerald-400 mt-1 flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-[#27AE60]" />
-                                        <span>{client.featureSubtext}</span>
-                                      </div>
-                                    ) : (
-                                      <div className="text-[10px] font-semibold text-[#F2994A] dark:text-amber-400 mt-1 flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-[#F2994A]" />
-                                        <span>{client.featureSubtext}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </td>
-                              )}
-
-                              {/* 4. Billing & Payment */}
-                              {visibleColumns.billingPayment && (
-                                <td className="px-4 py-4">
-                                  <div>
-                                    <div className="font-bold text-slate-900 dark:text-white text-xs">
-                                      {client.amountFormatted}
-                                    </div>
-                                    <div className="flex items-center gap-1.5 mt-0.5">
-                                      <span className="text-[11px] text-slate-400 font-medium truncate max-w-[110px]">
-                                        {client.paymentMethod}
-                                      </span>
-                                      <span
-                                        className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${client.paymentStatus === 'Paid'
-                                          ? 'bg-[#E8F8EE] text-[#27AE60]'
-                                          : 'bg-[#FEF3EB] text-[#F2994A]'
-                                          }`}
-                                      >
-                                        {client.paymentStatus || 'Paid'}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </td>
-                              )}
-
-                              {/* 5. Next Renewal Date & Days Left Warning */}
-                              {visibleColumns.nextRenewal && (
-                                <td className="px-4 py-4">
-                                  <div>
-                                    <div className="font-bold text-slate-800 dark:text-slate-200 text-xs">
-                                      {client.nextRenewalDate || client.date}
-                                    </div>
-                                    <div className="text-[10.5px] font-semibold text-[#F2994A] mt-0.5">
-                                      {client.daysLeftText || `${client.daysLeft || 10} days left`}
-                                    </div>
-                                  </div>
-                                </td>
-                              )}
-
-                              {/* 6. Actions (Eye, 3 dots, Accept Request) */}
-                              <td className="px-4 py-4 text-center">
-                                <div className="flex items-center justify-center gap-2 text-slate-400">
-                                  {client.status === 'Accepted' ? (
-                                    <span className="px-2.5 py-1 rounded-lg text-[11px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-700 inline-flex items-center gap-1 shrink-0 shadow-2xs">
-                                      <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                                      <span>Accepted</span>
-                                    </span>
-                                  ) : (
-                                    <button
-                                      title="Accept Request and notify client via email"
-                                      disabled={acceptingClientId === client.id}
-                                      onClick={() => handleAcceptClientRequest(client)}
-                                      className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-[11px] shadow-xs cursor-pointer inline-flex items-center gap-1.5 transition-all shrink-0 hover:shadow-emerald-500/20 active:scale-95 disabled:opacity-50"
-                                    >
-                                      {acceptingClientId === client.id ? (
-                                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                                      ) : (
-                                        <CheckCircle2 className="w-3.5 h-3.5" />
-                                      )}
-                                      <span>Accept Request</span>
-                                    </button>
                                   )}
-
-                                  <button
-                                    title="View Client Dossier"
-                                    onClick={() => setSelectedTransactionDetail(client)}
-                                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer transition-colors"
+                                  <a
+                                    href={client.customUrl || `https://${client.subdomain}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-[10px] text-[#5E48E8] dark:text-indigo-400 hover:underline font-mono inline-block truncate max-w-[200px]"
                                   >
-                                    <Eye className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />
-                                  </button>
+                                    {client.customUrl || `https://${client.subdomain}`}
+                                  </a>
+                                </div>
+                              </div>
+                            </td>
 
-                                  <div className="relative">
-                                    <button
-                                      title="More Options"
-                                      onClick={() =>
-                                        setActiveRowMenuId((prev) => (prev === client.id ? null : client.id))
-                                      }
-                                      className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer transition-colors"
+                            {/* 2. Plan & Status */}
+                            {visibleColumns.planStatus && (
+                              <td className="px-4 py-4">
+                                <div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-bold text-slate-900 dark:text-white text-xs">
+                                      {client.planStatusTitle || client.plan}
+                                    </span>
+                                    <span
+                                      className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${client.status === 'Accepted'
+                                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 ring-1 ring-emerald-500/40 font-black'
+                                        : client.status === 'Active' || client.status === 'Approved & Upgraded'
+                                          ? 'bg-[#E8F8EE] text-[#27AE60] dark:bg-emerald-950/40 dark:text-emerald-300'
+                                          : client.status === 'Trial'
+                                            ? 'bg-[#EBF3FE] text-[#2F80ED] dark:bg-blue-950/40 dark:text-blue-300'
+                                            : client.status === 'Expiring Soon'
+                                              ? 'bg-[#FEF3EB] text-[#F2994A] dark:bg-amber-950/40 dark:text-amber-300'
+                                              : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                                        }`}
                                     >
-                                      <MoreVertical className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />
-                                    </button>
-
-                                    {activeRowMenuId === client.id && (
-                                      <div className="absolute right-0 mt-1 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-1.5 z-20 space-y-1 text-left">
-                                        {client.status !== 'Accepted' && (
-                                          <button
-                                            onClick={() => {
-                                              handleAcceptClientRequest(client);
-                                              setActiveRowMenuId(null);
-                                            }}
-                                            className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center gap-2 font-bold cursor-pointer"
-                                          >
-                                            <CheckCircle2 className="w-3.5 h-3.5" />
-                                            <span>Accept Request</span>
-                                          </button>
-                                        )}
-                                        <button
-                                          onClick={() => {
-                                            navigator.clipboard?.writeText(
-                                              client.customUrl || `https://${client.subdomain}`
-                                            );
-                                            showToast('✓ Client login URL copied to clipboard!');
-                                            setActiveRowMenuId(null);
-                                          }}
-                                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2"
-                                        >
-                                          <Copy className="w-3.5 h-3.5" />
-                                          <span>Copy Portal URL</span>
-                                        </button>
-                                        <button
-                                          onClick={() => {
-                                            handleDownloadInvoice(client);
-                                            setActiveRowMenuId(null);
-                                          }}
-                                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2"
-                                        >
-                                          <Download className="w-3.5 h-3.5" />
-                                          <span>Download Folio</span>
-                                        </button>
-                                        <button
-                                          onClick={() => {
-                                            setFeatureClient(client);
-                                            setIsFeatureModalOpen(true);
-                                            setActiveRowMenuId(null);
-                                          }}
-                                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 dark:hover:bg-slate-700 text-violet-600 dark:text-violet-400 flex items-center gap-2"
-                                        >
-                                          <Sparkles className="w-3.5 h-3.5" />
-                                          <span>Custom Features</span>
-                                        </button>
-                                      </div>
-                                    )}
+                                      {client.status}
+                                    </span>
+                                  </div>
+                                  <div className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5 truncate">
+                                    {client.planSubtitle || client.licenseSeats}
                                   </div>
                                 </div>
                               </td>
-                            </tr>
-                          );
-                        })
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                            )}
 
-                {/* Footer / Pagination Controls (Exact replica of reference image) */}
-                <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
-                  <div className="font-medium text-slate-500 dark:text-slate-400">
-                    Showing {totalClientsCount === 0 ? 0 : startIndex + 1} to{' '}
-                    {Math.min(endIndex, totalClientsCount)} of {totalClientsCount} clients
-                  </div>
+                            {/* 2.5 Client Email Column */}
+                            {visibleColumns.email && (
+                              <td className="px-4 py-4">
+                                <div className="flex flex-col gap-1 min-w-[170px]">
+                                  <div className="flex items-center gap-1.5 text-slate-900 dark:text-white font-medium text-xs">
+                                    <Mail className="w-3.5 h-3.5 text-[#5E48E8] dark:text-indigo-400 shrink-0" />
+                                    <a
+                                      href={`mailto:${client.customerEmail}`}
+                                      className="hover:text-[#5E48E8] dark:hover:text-indigo-300 hover:underline truncate max-w-[185px] font-mono text-[11.5px]"
+                                      title={`Send email to ${client.customerEmail}`}
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      {client.customerEmail}
+                                    </a>
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-[#5E48E8] dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/60">
+                                      Registered Email
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigator.clipboard?.writeText(client.customerEmail);
+                                        showToast(`✓ Copied: ${client.customerEmail}`);
+                                      }}
+                                      className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
+                                      title="Copy Email Address"
+                                    >
+                                      <Copy className="w-3 h-3" />
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            )}
 
-                  <div className="flex items-center gap-2">
-                    {/* Per-Page Selector */}
-                    <div className="relative">
-                      <select
-                        value={clientPageSize}
-                        onChange={(e) => {
-                          setClientPageSize(Number(e.target.value));
-                          setClientPage(1);
-                        }}
-                        className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1 pr-6 text-xs text-slate-600 dark:text-slate-300 font-medium appearance-none cursor-pointer shadow-2xs hover:bg-slate-50"
-                      >
-                        <option value={5}>5 per page</option>
-                        <option value={10}>10 per page</option>
-                        <option value={20}>20 per page</option>
-                      </select>
-                      <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
+                            {/* 3. Feature Access with Purple Progress Bar */}
+                            {visibleColumns.featureAccess && (
+                              <td className="px-4 py-4">
+                                <div className="space-y-1">
+                                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                                    <span>
+                                      {client.featuresCurrent || 20} / {client.featuresTotal || 25} Features
+                                    </span>
+                                    <span>{client.featuresPercent || 80}%</span>
+                                  </div>
 
-                    {/* Prev Page Button */}
-                    <button
-                      disabled={clientPage === 1}
-                      onClick={() => setClientPage((prev) => Math.max(1, prev - 1))}
-                      className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer transition-colors"
-                    >
-                      <ChevronLeft className="w-3.5 h-3.5" />
-                    </button>
+                                  {/* Progress Track */}
+                                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                    <div
+                                      className="bg-[#7B61FF] h-1.5 rounded-full transition-all duration-300"
+                                      style={{ width: `${client.featuresPercent || 80}%` }}
+                                    />
+                                  </div>
 
-                    {/* Page Numbers */}
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                      <button
-                        key={p}
-                        onClick={() => setClientPage(p)}
-                        className={`w-7 h-7 rounded-lg text-xs font-bold transition-colors cursor-pointer ${clientPage === p
-                          ? 'bg-[#5E48E8] text-white shadow-xs'
-                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                          }`}
-                      >
-                        {p}
-                      </button>
-                    ))}
+                                  {/* Feature Subtext Badge */}
+                                  {client.featureSubtextType === 'available' ? (
+                                    <div className="text-[10px] font-semibold text-[#5E48E8] dark:text-indigo-400 mt-1">
+                                      {client.featureSubtext}
+                                    </div>
+                                  ) : client.featureSubtextType === 'active' ? (
+                                    <div className="text-[10px] font-semibold text-[#27AE60] dark:text-emerald-400 mt-1 flex items-center gap-1.5">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#27AE60]" />
+                                      <span>{client.featureSubtext}</span>
+                                    </div>
+                                  ) : (
+                                    <div className="text-[10px] font-semibold text-[#F2994A] dark:text-amber-400 mt-1 flex items-center gap-1.5">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#F2994A]" />
+                                      <span>{client.featureSubtext}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </td>
+                            )}
 
-                    {/* Next Page Button */}
-                    <button
-                      disabled={clientPage >= totalPages}
-                      onClick={() => setClientPage((prev) => Math.min(totalPages, prev + 1))}
-                      className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer transition-colors"
-                    >
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
+                            {/* 4. Billing & Payment */}
+                            {visibleColumns.billingPayment && (
+                              <td className="px-4 py-4">
+                                <div>
+                                  <div className="font-bold text-slate-900 dark:text-white text-xs">
+                                    {client.amountFormatted}
+                                  </div>
+                                  <div className="flex items-center gap-1.5 mt-0.5">
+                                    <span className="text-[11px] text-slate-400 font-medium truncate max-w-[110px]">
+                                      {client.paymentMethod}
+                                    </span>
+                                    <span
+                                      className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${client.paymentStatus === 'Paid'
+                                        ? 'bg-[#E8F8EE] text-[#27AE60]'
+                                        : 'bg-[#FEF3EB] text-[#F2994A]'
+                                        }`}
+                                    >
+                                      {client.paymentStatus || 'Paid'}
+                                    </span>
+                                  </div>
+                                </div>
+                              </td>
+                            )}
+
+                            {/* 5. Next Renewal Date & Days Left Warning */}
+                            {visibleColumns.nextRenewal && (
+                              <td className="px-4 py-4">
+                                <div>
+                                  <div className="font-bold text-slate-800 dark:text-slate-200 text-xs">
+                                    {client.nextRenewalDate || client.date}
+                                  </div>
+                                  <div className="text-[10.5px] font-semibold text-[#F2994A] mt-0.5">
+                                    {client.daysLeftText || `${client.daysLeft || 10} days left`}
+                                  </div>
+                                </div>
+                              </td>
+                            )}
+
+                            {/* 6. Actions (Eye, 3 dots, Accept Request) */}
+                            <td className="px-4 py-4 text-center">
+                              <div className="flex items-center justify-center gap-2 text-slate-400">
+                                {client.status === 'Accepted' ? (
+                                  <span className="px-2.5 py-1 rounded-lg text-[11px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-700 inline-flex items-center gap-1 shrink-0 shadow-2xs">
+                                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                                    <span>Accepted</span>
+                                  </span>
+                                ) : (
+                                  <button
+                                    title="Accept Request and notify client via email"
+                                    disabled={acceptingClientId === client.id}
+                                    onClick={() => handleAcceptClientRequest(client)}
+                                    className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-[11px] shadow-xs cursor-pointer inline-flex items-center gap-1.5 transition-all shrink-0 hover:shadow-emerald-500/20 active:scale-95 disabled:opacity-50"
+                                  >
+                                    {acceptingClientId === client.id ? (
+                                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                    ) : (
+                                      <CheckCircle2 className="w-3.5 h-3.5" />
+                                    )}
+                                    <span>Accept Request</span>
+                                  </button>
+                                )}
+
+                                <button
+                                  title="View Client Dossier"
+                                  onClick={() => setSelectedTransactionDetail(client)}
+                                  className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer transition-colors"
+                                >
+                                  <Eye className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />
+                                </button>
+
+                                <div className="relative">
+                                  <button
+                                    title="More Options"
+                                    onClick={() =>
+                                      setActiveRowMenuId((prev) => (prev === client.id ? null : client.id))
+                                    }
+                                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer transition-colors"
+                                  >
+                                    <MoreVertical className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />
+                                  </button>
+
+                                  {activeRowMenuId === client.id && (
+                                    <div className="absolute right-0 mt-1 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-1.5 z-20 space-y-1 text-left">
+                                      {client.status !== 'Accepted' && (
+                                        <button
+                                          onClick={() => {
+                                            handleAcceptClientRequest(client);
+                                            setActiveRowMenuId(null);
+                                          }}
+                                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center gap-2 font-bold cursor-pointer"
+                                        >
+                                          <CheckCircle2 className="w-3.5 h-3.5" />
+                                          <span>Accept Request</span>
+                                        </button>
+                                      )}
+                                      <button
+                                        onClick={() => {
+                                          navigator.clipboard?.writeText(
+                                            client.customUrl || `https://${client.subdomain}`
+                                          );
+                                          showToast('✓ Client login URL copied to clipboard!');
+                                          setActiveRowMenuId(null);
+                                        }}
+                                        className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2"
+                                      >
+                                        <Copy className="w-3.5 h-3.5" />
+                                        <span>Copy Portal URL</span>
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          handleDownloadInvoice(client);
+                                          setActiveRowMenuId(null);
+                                        }}
+                                        className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2"
+                                      >
+                                        <Download className="w-3.5 h-3.5" />
+                                        <span>Download Folio</span>
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          setFeatureClient(client);
+                                          setIsFeatureModalOpen(true);
+                                          setActiveRowMenuId(null);
+                                        }}
+                                        className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 dark:hover:bg-slate-700 text-violet-600 dark:text-violet-400 flex items-center gap-2"
+                                      >
+                                        <Sparkles className="w-3.5 h-3.5" />
+                                        <span>Custom Features</span>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
 
-              {/* Add Client Modal */}
-              {isAddClientOpen && (
-                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
-                  <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-lg p-6 space-y-4">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                      <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        <Users className="w-4 h-4 text-[#5E48E8]" />
-                        <span>Onboard New Client</span>
-                      </h3>
-                      <button
-                        onClick={() => setIsAddClientOpen(false)}
-                        className="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+              {/* Footer / Pagination Controls (Exact replica of reference image) */}
+              <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+                <div className="font-medium text-slate-500 dark:text-slate-400">
+                  Showing {totalClientsCount === 0 ? 0 : startIndex + 1} to{' '}
+                  {Math.min(endIndex, totalClientsCount)} of {totalClientsCount} clients
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {/* Per-Page Selector */}
+                  <div className="relative">
+                    <select
+                      value={clientPageSize}
+                      onChange={(e) => {
+                        setClientPageSize(Number(e.target.value));
+                        setClientPage(1);
+                      }}
+                      className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1 pr-6 text-xs text-slate-600 dark:text-slate-300 font-medium appearance-none cursor-pointer shadow-2xs hover:bg-slate-50"
+                    >
+                      <option value={5}>5 per page</option>
+                      <option value={10}>10 per page</option>
+                      <option value={20}>20 per page</option>
+                    </select>
+                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+
+                  {/* Prev Page Button */}
+                  <button
+                    disabled={clientPage === 1}
+                    onClick={() => setClientPage((prev) => Math.max(1, prev - 1))}
+                    className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer transition-colors"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+
+                  {/* Page Numbers */}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setClientPage(p)}
+                      className={`w-7 h-7 rounded-lg text-xs font-bold transition-colors cursor-pointer ${clientPage === p
+                        ? 'bg-[#5E48E8] text-white shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                        }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+
+                  {/* Next Page Button */}
+                  <button
+                    disabled={clientPage >= totalPages}
+                    onClick={() => setClientPage((prev) => Math.min(totalPages, prev + 1))}
+                    className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer transition-colors"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Add Client Modal */}
+            {isAddClientOpen && (
+              <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-lg p-6 space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                      <Users className="w-4 h-4 text-[#5E48E8]" />
+                      <span>Onboard New Client</span>
+                    </h3>
+                    <button
+                      onClick={() => setIsAddClientOpen(false)}
+                      className="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleAddClientSubmit} className="space-y-3.5 text-xs">
+                    <div>
+                      <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                        Client Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Devendra Patel (Person A)"
+                        value={newClientName}
+                        onChange={(e) => setNewClientName(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                      />
                     </div>
 
-                    <form onSubmit={handleAddClientSubmit} className="space-y-3.5 text-xs">
+                    <div>
+                      <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                        Client Registered Email Address
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="e.g. d.patel@grandhorizonresorts.com"
+                        value={newClientEmail}
+                        onChange={(e) => setNewClientEmail(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                          Client Full Name *
+                          Organization / Resort *
                         </label>
                         <input
                           type="text"
                           required
-                          placeholder="e.g. Devendra Patel (Person A)"
-                          value={newClientName}
-                          onChange={(e) => setNewClientName(e.target.value)}
+                          placeholder="e.g. Grand Horizon Palace"
+                          value={newClientOrg}
+                          onChange={(e) => setNewClientOrg(e.target.value)}
                           className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
                         />
                       </div>
 
                       <div>
                         <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                          Client Registered Email Address
+                          Custom Subdomain URL
                         </label>
                         <input
-                          type="email"
-                          placeholder="e.g. d.patel@grandhorizonresorts.com"
-                          value={newClientEmail}
-                          onChange={(e) => setNewClientEmail(e.target.value)}
-                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs"
+                          type="text"
+                          placeholder="e.g. grandhorizon.moments.io"
+                          value={newClientUrl}
+                          onChange={(e) => setNewClientUrl(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-[11px]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Plan Tier
+                        </label>
+                        <select
+                          value={newClientPlan}
+                          onChange={(e) => setNewClientPlan(e.target.value as any)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        >
+                          <option value="Growth">Growth</option>
+                          <option value="Professional">Professional</option>
+                          <option value="Enterprise">Enterprise</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Status
+                        </label>
+                        <select
+                          value={newClientStatus}
+                          onChange={(e) => setNewClientStatus(e.target.value as any)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        >
+                          <option value="Active">Active</option>
+                          <option value="Trial">Trial</option>
+                          <option value="Expiring Soon">Expiring Soon</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Cycle
+                        </label>
+                        <select
+                          value={newClientCycle}
+                          onChange={(e) => setNewClientCycle(e.target.value as any)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        >
+                          <option value="monthly">Monthly</option>
+                          <option value="yearly">Yearly</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Amount ($)
+                        </label>
+                        <input
+                          type="number"
+                          value={newClientAmount}
+                          onChange={(e) => setNewClientAmount(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono"
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Organization / Resort *
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            placeholder="e.g. Grand Horizon Palace"
-                            value={newClientOrg}
-                            onChange={(e) => setNewClientOrg(e.target.value)}
-                            className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Custom Subdomain URL
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g. grandhorizon.moments.io"
-                            value={newClientUrl}
-                            onChange={(e) => setNewClientUrl(e.target.value)}
-                            className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-[11px]"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3">
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Plan Tier
-                          </label>
-                          <select
-                            value={newClientPlan}
-                            onChange={(e) => setNewClientPlan(e.target.value as any)}
-                            className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          >
-                            <option value="Growth">Growth</option>
-                            <option value="Professional">Professional</option>
-                            <option value="Enterprise">Enterprise</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Status
-                          </label>
-                          <select
-                            value={newClientStatus}
-                            onChange={(e) => setNewClientStatus(e.target.value as any)}
-                            className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          >
-                            <option value="Active">Active</option>
-                            <option value="Trial">Trial</option>
-                            <option value="Expiring Soon">Expiring Soon</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Cycle
-                          </label>
-                          <select
-                            value={newClientCycle}
-                            onChange={(e) => setNewClientCycle(e.target.value as any)}
-                            className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          >
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly">Yearly</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Amount ($)
-                          </label>
-                          <input
-                            type="number"
-                            value={newClientAmount}
-                            onChange={(e) => setNewClientAmount(e.target.value)}
-                            className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Payment Method
-                          </label>
-                          <select
-                            value={newClientMethod}
-                            onChange={(e) => setNewClientMethod(e.target.value)}
-                            className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          >
-                            <option value="Bank Wire">Bank Wire</option>
-                            <option value="Razorpay UPI">Razorpay UPI</option>
-                            <option value="Stripe Business">Stripe Business</option>
-                            <option value="Emirates NBD">Emirates NBD</option>
-                            <option value="Stripe Card">Credit Card</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                        <button
-                          type="button"
-                          onClick={() => setIsAddClientOpen(false)}
-                          className="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Payment Method
+                        </label>
+                        <select
+                          value={newClientMethod}
+                          onChange={(e) => setNewClientMethod(e.target.value)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
                         >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          className="px-5 py-2 rounded-xl bg-[#5E48E8] text-white font-bold shadow-md shadow-indigo-500/25 cursor-pointer hover:bg-[#503DD4]"
-                        >
-                          Confirm & Add Client
-                        </button>
+                          <option value="Bank Wire">Bank Wire</option>
+                          <option value="Razorpay UPI">Razorpay UPI</option>
+                          <option value="Stripe Business">Stripe Business</option>
+                          <option value="Emirates NBD">Emirates NBD</option>
+                          <option value="Stripe Card">Credit Card</option>
+                        </select>
                       </div>
-                    </form>
-                  </div>
-                </div>
-              )}
+                    </div>
 
-              {/* Edit Client Modal */}
-              {isEditClientOpen && editingClient && (
-                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
-                  <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-lg p-6 space-y-4">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                      <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        <Pencil className="w-4 h-4 text-[#5E48E8]" />
-                        <span>Edit Client: {editingClient.customerName}</span>
-                      </h3>
+                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                       <button
+                        type="button"
+                        onClick={() => setIsAddClientOpen(false)}
+                        className="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-5 py-2 rounded-xl bg-[#5E48E8] text-white font-bold shadow-md shadow-indigo-500/25 cursor-pointer hover:bg-[#503DD4]"
+                      >
+                        Confirm & Add Client
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Edit Client Modal */}
+            {isEditClientOpen && editingClient && (
+              <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-lg p-6 space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                      <Pencil className="w-4 h-4 text-[#5E48E8]" />
+                      <span>Edit Client: {editingClient.customerName}</span>
+                    </h3>
+                    <button
+                      onClick={() => {
+                        setIsEditClientOpen(false);
+                        setEditingClient(null);
+                      }}
+                      className="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleEditClientSubmit} className="space-y-3.5 text-xs">
+                    <div>
+                      <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                        Organization / Company Name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={editingClient.companyName}
+                        onChange={(e) =>
+                          setEditingClient({ ...editingClient, companyName: e.target.value })
+                        }
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                        Client Registered Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={editingClient.customerEmail || ''}
+                        onChange={(e) =>
+                          setEditingClient({ ...editingClient, customerEmail: e.target.value })
+                        }
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Plan Status Label
+                        </label>
+                        <input
+                          type="text"
+                          value={editingClient.planStatusTitle || editingClient.plan}
+                          onChange={(e) =>
+                            setEditingClient({ ...editingClient, planStatusTitle: e.target.value })
+                          }
+                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Status Tag
+                        </label>
+                        <select
+                          value={editingClient.status}
+                          onChange={(e) =>
+                            setEditingClient({ ...editingClient, status: e.target.value as any })
+                          }
+                          className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        >
+                          <option value="Active">Active</option>
+                          <option value="Trial">Trial</option>
+                          <option value="Expiring Soon">Expiring Soon</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Payment Status
+                        </label>
+                        <select
+                          value={editingClient.paymentStatus || 'Paid'}
+                          onChange={(e) =>
+                            setEditingClient({ ...editingClient, paymentStatus: e.target.value as any })
+                          }
+                          className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        >
+                          <option value="Paid">Paid</option>
+                          <option value="Due">Due</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
+                          Days Left / Alert
+                        </label>
+                        <input
+                          type="text"
+                          value={editingClient.daysLeftText || ''}
+                          onChange={(e) =>
+                            setEditingClient({ ...editingClient, daysLeftText: e.target.value })
+                          }
+                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                      <button
+                        type="button"
                         onClick={() => {
                           setIsEditClientOpen(false);
                           setEditingClient(null);
                         }}
-                        className="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                        className="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                       >
-                        <X className="w-4 h-4" />
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-5 py-2 rounded-xl bg-[#5E48E8] text-white font-bold shadow-md shadow-indigo-500/25 cursor-pointer hover:bg-[#503DD4]"
+                      >
+                        Save Changes
                       </button>
                     </div>
-
-                    <form onSubmit={handleEditClientSubmit} className="space-y-3.5 text-xs">
-                      <div>
-                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                          Organization / Company Name
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={editingClient.companyName}
-                          onChange={(e) =>
-                            setEditingClient({ ...editingClient, companyName: e.target.value })
-                          }
-                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                          Client Registered Email Address
-                        </label>
-                        <input
-                          type="email"
-                          value={editingClient.customerEmail || ''}
-                          onChange={(e) =>
-                            setEditingClient({ ...editingClient, customerEmail: e.target.value })
-                          }
-                          className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Plan Status Label
-                          </label>
-                          <input
-                            type="text"
-                            value={editingClient.planStatusTitle || editingClient.plan}
-                            onChange={(e) =>
-                              setEditingClient({ ...editingClient, planStatusTitle: e.target.value })
-                            }
-                            className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Status Tag
-                          </label>
-                          <select
-                            value={editingClient.status}
-                            onChange={(e) =>
-                              setEditingClient({ ...editingClient, status: e.target.value as any })
-                            }
-                            className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          >
-                            <option value="Active">Active</option>
-                            <option value="Trial">Trial</option>
-                            <option value="Expiring Soon">Expiring Soon</option>
-                            <option value="Cancelled">Cancelled</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Payment Status
-                          </label>
-                          <select
-                            value={editingClient.paymentStatus || 'Paid'}
-                            onChange={(e) =>
-                              setEditingClient({ ...editingClient, paymentStatus: e.target.value as any })
-                            }
-                            className="w-full px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          >
-                            <option value="Paid">Paid</option>
-                            <option value="Due">Due</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1">
-                            Days Left / Alert
-                          </label>
-                          <input
-                            type="text"
-                            value={editingClient.daysLeftText || ''}
-                            onChange={(e) =>
-                              setEditingClient({ ...editingClient, daysLeftText: e.target.value })
-                            }
-                            className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setIsEditClientOpen(false);
-                            setEditingClient(null);
-                          }}
-                          className="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          className="px-5 py-2 rounded-xl bg-[#5E48E8] text-white font-bold shadow-md shadow-indigo-500/25 cursor-pointer hover:bg-[#503DD4]"
-                        >
-                          Save Changes
-                        </button>
-                      </div>
-                    </form>
-                  </div>
+                  </form>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Record Manual Payment Modal */}
       {isRecordPaymentOpen && (
