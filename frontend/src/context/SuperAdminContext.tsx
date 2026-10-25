@@ -84,7 +84,7 @@ export function SuperAdminProvider({
       : typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL
       ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '')
       : typeof window !== 'undefined' && (window.location.port === '3000' || window.location.port === '3001')
-      ? 'http://localhost:4000'
+      ? 'http://localhost:5001'
       : '';
 
   const [activeTab, setActiveTab] = useState<SuperAdminTab>('overview');

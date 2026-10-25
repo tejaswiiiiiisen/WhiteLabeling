@@ -37,6 +37,9 @@ const tenantPlanController = require('./controllers/tenantPlanController');
 const paymentController = require('./controllers/paymentController');
 const { tenantPlanRouter, createTenantPlanRouter } = require('./routes/tenantPlanRoutes');
 const { paymentRouter, createPaymentRouter } = require('./routes/paymentRoutes');
+const ClonedWebsite = require('./models/ClonedWebsite');
+const websiteCloneController = require('./controllers/websiteCloneController');
+const { websiteCloneRouter, createWebsiteCloneRouter } = require('./routes/websiteCloneRoutes');
 
 module.exports = {
   tenantResolver,
@@ -85,5 +88,9 @@ module.exports = {
   createTenantPlanRouter,
   paymentRouter,
   createPaymentRouter,
+  ClonedWebsite,
+  websiteCloneController,
+  websiteCloneRouter,
+  createWebsiteCloneRouter,
   setMongoose: TenantBranding.setMongoose,
 };

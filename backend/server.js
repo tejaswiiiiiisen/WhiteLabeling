@@ -24,6 +24,7 @@ const {
   projectAccessRouter,
   paymentRouter,
   tenantPlanRouter,
+  websiteCloneRouter,
 } = require('./index');
 
 const app = express();
@@ -60,6 +61,10 @@ app.use('/api/webhooks/razorpay', paymentRouter);
 app.use('/api/tenant-plans', tenantPlanRouter);
 app.use('/api/whitelabel/tenant-plans', tenantPlanRouter);
 
+// Mount Universal Website Cloning & Visual Editing Engine
+app.use('/api/whitelabel/clone', websiteCloneRouter);
+app.use('/whitelabel/clone', websiteCloneRouter);
+
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({
@@ -73,6 +78,28 @@ app.get('/', (req, res) => {
   });
 });
 
+const { execSync } = require('child_process');
+
+function killPortProcess(port) {
+  try {
+    if (process.platform === 'win32') {
+      const output = execSync(`netstat -ano | findstr :${port}`, { stdio: ['pipe', 'pipe', 'ignore'] }).toString();
+      const lines = output.trim().split('\n');
+      for (const line of lines) {
+        const parts = line.trim().split(/\s+/);
+        const state = parts[3];
+        const pid = parts[parts.length - 1];
+        if (state === 'LISTENING' && pid && pid !== '0' && Number(pid) !== process.pid) {
+          try {
+            execSync(`taskkill /F /PID ${pid}`, { stdio: 'ignore' });
+            console.log(`🧹 Freed port ${port} by terminating lingering process (PID ${pid})`);
+          } catch (_) {}
+        }
+      }
+    }
+  } catch (_) {}
+}
+
 const PORT = process.env.WHITELABEL_PORT || 5001;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/hrms';
 
@@ -85,7 +112,22 @@ mongoose
     console.warn('⚠️ MongoDB connection warning (standalone mode):', err.message);
   });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Whitelabelling Standalone Server is running on http://localhost:${PORT}`);
-  console.log(`👉 Public Branding API: http://localhost:${PORT}/api/whitelabel/public-branding`);
-});
+function startServer(retries = 2) {
+  killPortProcess(PORT);
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Whitelabelling Standalone Server is running on http://localhost:${PORT}`);
+    console.log(`👉 Public Branding API: http://localhost:${PORT}/api/whitelabel/public-branding`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE' && retries > 0) {
+      console.warn(`⚠️ Port ${PORT} busy, cleaning up and retrying...`);
+      killPortProcess(PORT);
+      setTimeout(() => startServer(retries - 1), 700);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+}
+
+startServer();

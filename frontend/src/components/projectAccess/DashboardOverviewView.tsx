@@ -1942,7 +1942,7 @@ Authorized Signature: Macenza Core Billing Gateway
                 <div className="search-loop-border" />
 
                 {/* Inner Search Container (Elevated Above Rotating Loop) */}
-                <div className="relative z-10 flex items-center bg-slate-900/95 backdrop-blur-xl rounded-xl py-0.5 px-1 overflow-hidden">
+                <div className="relative z-10 flex items-center bg-[#070b13] rounded-xl py-0.5 px-1 overflow-hidden shadow-inner">
                   <div className="search-loop-shimmer" />
 
                   <div className="pl-2.5 pr-2 py-1.5 flex items-center text-cyan-400 shrink-0">
@@ -2147,7 +2147,7 @@ Authorized Signature: Macenza Core Billing Gateway
           </div>
 
           {/* Right Side: Graph in corner (Bada / Prominent Size) */}
-          <div className="shrink-0 flex flex-col items-center justify-center relative p-2">
+          <div className="shrink-0 flex flex-col items-center justify-center relative p-2 min-w-[280px]">
             {/* Top Indicator Badges above graph */}
             <div className="flex flex-wrap items-center justify-center gap-2 mb-3">
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800 text-orange-600 dark:text-orange-400 text-[11px] font-black tracking-wide shadow-2xs whitespace-nowrap">
@@ -2164,7 +2164,7 @@ Authorized Signature: Macenza Core Billing Gateway
               </div>
             </div>
 
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 flex items-center justify-center">
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 flex items-center justify-center shrink-0">
               {/* Outer Glowing Pulsing Aura */}
               <div className="absolute inset-0 rounded-full animate-pulse-glow-ring" />
 
@@ -2241,8 +2241,8 @@ Authorized Signature: Macenza Core Billing Gateway
                   <TrendingUp className="w-4 h-4" />
                 </div>
                 <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">₹8.42L</div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Total Income</span>
-                <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 font-semibold">2 Projects • 1 Org</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 whitespace-nowrap">Total Income</span>
+                <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 font-semibold whitespace-nowrap">2 Projects • 1 Org</span>
               </div>
             </div>
 

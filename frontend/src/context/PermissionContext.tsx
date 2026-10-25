@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { PermissionDefinition } from '../types/permissions';
 
@@ -43,7 +43,7 @@ export function PermissionProvider({
       : typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL
       ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '')
       : typeof window !== 'undefined' && (window.location.port === '3000' || window.location.port === '3001')
-      ? 'http://localhost:4000'
+      ? 'http://localhost:5001'
       : '';
 
   const [permissions, setPermissions] = useState<Record<string, boolean>>({});

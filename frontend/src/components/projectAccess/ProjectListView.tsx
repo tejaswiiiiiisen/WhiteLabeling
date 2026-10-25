@@ -45,6 +45,7 @@ import {
 import SubscriptionCheckoutModal from './SubscriptionCheckoutModal';
 import { DynamicSubscriptionData } from './DynamicSubscriptionConfirmation';
 import { WhiteLabelBannerGraphic } from './WhiteLabelBannerGraphic';
+import WebsiteClonerStudio from './WebsiteClonerStudio';
 
 export interface ProjectTransactionDetail {
   id: string;
@@ -312,7 +313,7 @@ export default function ProjectListView() {
   } = useProjectAccess();
 
   const [catalogSearch, setCatalogSearch] = useState('');
-  const [activeTab, setActiveTab] = useState<'projects' | 'plans' | 'history'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'cloner' | 'plans' | 'history'>('projects');
   const [selectedDrawerProject, setSelectedDrawerProject] = useState<'hrms' | 'hotel' | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -434,7 +435,41 @@ export default function ProjectListView() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-800/80">
+            <div className="inline-flex items-center p-1 bg-slate-900/90 rounded-xl border border-slate-800">
+              <button
+                onClick={() => setActiveTab('projects')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'projects'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                White Labels
+              </button>
+              <button
+                onClick={() => setActiveTab('cloner')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'cloner'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25 ring-1 ring-cyan-400/40'
+                    : 'text-cyan-400 hover:text-cyan-300 hover:bg-slate-800/60'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+                <span>Website Cloner Studio</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('plans')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'plans'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Plans
+              </button>
+            </div>
+
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-800/80">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               2 Active Suites
             </span>
@@ -442,80 +477,110 @@ export default function ProjectListView() {
         </div>
 
         {/* 4 Distinct Vibrant Stat Cards */}
-        <div className="relative z-10 grid grid-cols-4 gap-3 w-full pt-1">
-          {/* 1. Total Projects (Amber / Orange Theme) */}
-          <div className="flex flex-col justify-between bg-[#111624] border border-orange-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-orange-500/5 hover:border-orange-500/60 hover:shadow-md hover:shadow-orange-500/10 transition-all group min-w-0">
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-[10px] font-black text-orange-400 uppercase tracking-wider truncate">Total Projects</span>
-              <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-orange-500/30 group-hover:scale-105 transition-transform">
-                <Layers className="w-3.5 h-3.5" />
+        {activeTab !== 'cloner' && (
+          <div className="relative z-10 grid grid-cols-4 gap-3 w-full pt-1">
+            {/* 1. Total Projects (Amber / Orange Theme) */}
+            <div className="flex flex-col justify-between bg-[#111624] border border-orange-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-orange-500/5 hover:border-orange-500/60 hover:shadow-md hover:shadow-orange-500/10 transition-all group min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[10px] font-black text-orange-400 uppercase tracking-wider truncate">Total Projects</span>
+                <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-orange-500/30 group-hover:scale-105 transition-transform">
+                  <Layers className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <div className="mt-1">
+                <div className="text-xl sm:text-2xl font-black text-white">2</div>
+                <span className="text-[10px] font-black text-orange-400 flex items-center gap-1 mt-0.5 truncate">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse shrink-0" />
+                  Active Suites
+                </span>
               </div>
             </div>
-            <div className="mt-1">
-              <div className="text-xl sm:text-2xl font-black text-white">2</div>
-              <span className="text-[10px] font-black text-orange-400 flex items-center gap-1 mt-0.5 truncate">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse shrink-0" />
-                Active Suites
-              </span>
-            </div>
-          </div>
 
-          {/* 2. In Progress / Active (Electric Cyan / Sky Blue Theme) */}
-          <div className="flex flex-col justify-between bg-[#111624] border border-cyan-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-cyan-500/5 hover:border-cyan-500/60 hover:shadow-md hover:shadow-cyan-500/10 transition-all group min-w-0">
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-[10px] font-black text-cyan-400 uppercase tracking-wider truncate">In Progress</span>
-              <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-cyan-500/30 group-hover:scale-105 transition-transform">
-                <Zap className="w-3.5 h-3.5" />
+            {/* 2. In Progress / Active (Electric Cyan / Sky Blue Theme) */}
+            <div className="flex flex-col justify-between bg-[#111624] border border-cyan-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-cyan-500/5 hover:border-cyan-500/60 hover:shadow-md hover:shadow-cyan-500/10 transition-all group min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[10px] font-black text-cyan-400 uppercase tracking-wider truncate">In Progress</span>
+                <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-cyan-500/30 group-hover:scale-105 transition-transform">
+                  <Zap className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <div className="mt-1">
+                <div className="text-xl sm:text-2xl font-black text-white">4</div>
+                <span className="text-[10px] font-black text-cyan-400 flex items-center gap-1 mt-0.5 truncate">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+                  Under Provisioning
+                </span>
               </div>
             </div>
-            <div className="mt-1">
-              <div className="text-xl sm:text-2xl font-black text-white">4</div>
-              <span className="text-[10px] font-black text-cyan-400 flex items-center gap-1 mt-0.5 truncate">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-                Under Provisioning
-              </span>
-            </div>
-          </div>
 
-          {/* 3. Completed White Label (Royal Violet / Purple Theme) */}
-          <div className="flex flex-col justify-between bg-[#111624] border border-purple-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-purple-500/5 hover:border-purple-500/60 hover:shadow-md hover:shadow-purple-500/10 transition-all group min-w-0">
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-[10px] font-black text-purple-400 uppercase tracking-wider truncate">Completed WL</span>
-              <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-violet-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-purple-500/30 group-hover:scale-105 transition-transform">
-                <CheckCircle2 className="w-3.5 h-3.5" />
+            {/* 3. Completed White Label (Royal Violet / Purple Theme) */}
+            <div className="flex flex-col justify-between bg-[#111624] border border-purple-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-purple-500/5 hover:border-purple-500/60 hover:shadow-md hover:shadow-purple-500/10 transition-all group min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[10px] font-black text-purple-400 uppercase tracking-wider truncate">Completed WL</span>
+                <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-violet-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-purple-500/30 group-hover:scale-105 transition-transform">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <div className="mt-1">
+                <div className="text-xl sm:text-2xl font-black text-white">12</div>
+                <span className="text-[10px] font-black text-purple-400 flex items-center gap-1 mt-0.5 truncate">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse shrink-0" />
+                  Live Deployed
+                </span>
               </div>
             </div>
-            <div className="mt-1">
-              <div className="text-xl sm:text-2xl font-black text-white">12</div>
-              <span className="text-[10px] font-black text-purple-400 flex items-center gap-1 mt-0.5 truncate">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse shrink-0" />
-                Live Deployed
-              </span>
-            </div>
-          </div>
 
-          {/* 4. Total Income / Revenue (Emerald Green / Mint Theme) */}
-          <div className="flex flex-col justify-between bg-[#111624] border border-emerald-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-emerald-500/5 hover:border-emerald-500/60 hover:shadow-md hover:shadow-emerald-500/10 transition-all group min-w-0">
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-wider truncate">Total Income</span>
-              <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30 group-hover:scale-105 transition-transform">
-                <Coins className="w-3.5 h-3.5" />
+            {/* 4. Total Income / Revenue (Emerald Green / Mint Theme) */}
+            <div className="flex flex-col justify-between bg-[#111624] border border-emerald-500/30 rounded-xl p-3 px-3.5 min-h-[85px] shadow-sm shadow-emerald-500/5 hover:border-emerald-500/60 hover:shadow-md hover:shadow-emerald-500/10 transition-all group min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[10px] font-black text-emerald-400 uppercase tracking-wider truncate">Total Income</span>
+                <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30 group-hover:scale-105 transition-transform">
+                  <Coins className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <div className="mt-1">
+                <div className="text-xl sm:text-2xl font-black text-emerald-300">₹8.42L</div>
+                <span className="text-[10px] font-black text-emerald-400 flex items-center gap-1 mt-0.5 truncate">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  INR Gross
+                </span>
               </div>
             </div>
-            <div className="mt-1">
-              <div className="text-xl sm:text-2xl font-black text-emerald-300">₹8.42L</div>
-              <span className="text-[10px] font-black text-emerald-400 flex items-center gap-1 mt-0.5 truncate">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                INR Gross
-              </span>
-            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* View 1: Main Projects & Modules Catalog */}
       {activeTab === 'projects' && (
         <div className="space-y-4">
+          {/* Quick Launch Banner for Website Cloner Studio */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/60 via-[#0B1224] to-cyan-950/40 border border-cyan-500/30 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-cyan-500/25 shrink-0">
+                ⚡
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm sm:text-base font-black text-white">Universal Website Cloning & Visual Editing Studio</h3>
+                  <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                    Live Engine
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Enter any website URL to automatically extract structure, styling & components, then edit text, images, and layout visually.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setActiveTab('cloner')}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-black shadow-lg shadow-cyan-500/20 flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap shrink-0"
+            >
+              <Sparkles className="w-4 h-4 text-cyan-200" />
+              <span>Launch Studio</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
           {(() => {
             const list = Array.isArray(projects) && projects.length > 0 ? [...projects] : [];
             const hasHrms = list.some((p) => p.projectId === 'hrms');
@@ -873,6 +938,13 @@ export default function ProjectListView() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* View: Universal Website Cloner & Visual Editing Studio */}
+      {activeTab === 'cloner' && (
+        <div className="animate-fadeIn">
+          <WebsiteClonerStudio onBackToSuites={() => setActiveTab('projects')} />
         </div>
       )}
 
